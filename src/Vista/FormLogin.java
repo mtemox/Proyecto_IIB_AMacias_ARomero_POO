@@ -24,8 +24,8 @@ public class FormLogin extends JFrame {
             // 1. Crea el ImageIcon original
             ImageIcon originalIcon = new ImageIcon(imageUrl);
             // 2. Define el nuevo tamaño que deseas para la imagen
-            int nuevoAncho = 100; // Por ejemplo, 100 píxeles de ancho
-            int nuevoAlto = 100;  // Por ejemplo, 100 píxeles de alto
+            int nuevoAncho = 200; // Por ejemplo, 100 píxeles de ancho
+            int nuevoAlto = 200;  // Por ejemplo, 100 píxeles de alto
             // 3. Obtiene la 'Image' del ImageIcon original y la escala
             //    Image.SCALE_SMOOTH le da mayor calidad al redimensionamiento.
             java.awt.Image imagenOriginal = originalIcon.getImage();
