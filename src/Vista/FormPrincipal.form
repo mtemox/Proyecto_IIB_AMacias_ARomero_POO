@@ -21,7 +21,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <font name="Roboto SemiCondensed" size="16" style="1"/>
+              <font name="Roboto Light" size="20" style="1"/>
               <text value="SIBIBLI"/>
             </properties>
           </component>
@@ -32,71 +32,71 @@
           </vspacer>
           <component id="97a24" class="javax.swing.JButton" binding="btnGestionLibros">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <background color="-1"/>
-              <font name="Roboto" size="14" style="0"/>
+              <font name="Roboto" size="16" style="1"/>
               <text value="Gestionar Libros"/>
             </properties>
           </component>
           <component id="21aa4" class="javax.swing.JButton" binding="btnGestionSocios">
             <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <background color="-1"/>
-              <font name="Roboto" size="14" style="0"/>
+              <font name="Roboto" size="16" style="1"/>
               <text value="Gestionar Socios"/>
             </properties>
           </component>
           <component id="947ca" class="javax.swing.JButton" binding="btnNuevoPrestamo">
             <constraints>
-              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <background color="-1"/>
-              <font name="Roboto" size="14" style="0"/>
+              <font name="Roboto" size="16" style="1"/>
               <text value="Nuevo Préstamo"/>
             </properties>
           </component>
           <component id="239e1" class="javax.swing.JButton" binding="btnRegistrarDevolucion">
             <constraints>
-              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <background color="-1"/>
-              <font name="Roboto" size="14" style="0"/>
+              <font name="Roboto" size="16" style="1"/>
               <text value="Registrar Devolución"/>
             </properties>
           </component>
           <component id="ac1b9" class="javax.swing.JButton" binding="btnGestionUsuarios">
             <constraints>
-              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <background color="-1"/>
-              <font name="Roboto" size="14" style="0"/>
+              <font name="Roboto" size="16" style="1"/>
               <text value="Gestionar Usuarios"/>
             </properties>
           </component>
           <component id="ac111" class="javax.swing.JButton" binding="btnVerReportes">
             <constraints>
-              <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <background color="-1"/>
-              <font name="Roboto" size="14" style="0"/>
+              <font name="Roboto" size="16" style="1"/>
               <text value="Ver Reportes"/>
             </properties>
           </component>
           <component id="17dd5" class="javax.swing.JButton" binding="btnCerrarSesion">
             <constraints>
-              <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <background color="-1"/>
-              <font name="Roboto" size="14" style="0"/>
+              <font name="Roboto" size="16" style="1"/>
               <text value="Cerrar Sesión"/>
             </properties>
           </component>

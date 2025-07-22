@@ -40,11 +40,14 @@ public class FormPrincipal extends JFrame {
     public FormPrincipal() {
         setTitle("SIBIBLI");
         setContentPane(panelPrincipal);
-        pack();
+        setSize(1500, 720);
+        //setExtendedState(JFrame.MAXIMIZED_BOTH); // Para iniciar maximizado
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
 
+        PanelBienvenida panelBienvenida = new PanelBienvenida();
+        mostrarPanel(panelBienvenida.getPanelBienvenida());
 
         btnGestionLibros.addActionListener(new ActionListener() {
             @Override
@@ -53,7 +56,13 @@ public class FormPrincipal extends JFrame {
                 mostrarPanel(panel.getPanel()); // Usas tu metodo para cambiar de panel
             }
         });
+        btnNuevoPrestamo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PanelNuevoPrestamo panelNuevoPrestamo = new PanelNuevoPrestamo();
+                mostrarPanel(panelNuevoPrestamo.getPanelNuevoPrestamo());
+            }
+        });
     }
-
 
 }

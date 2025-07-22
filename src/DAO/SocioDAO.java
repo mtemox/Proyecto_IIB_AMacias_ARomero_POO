@@ -3,6 +3,7 @@ package DAO;
 import Modelo.Socio;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SocioDAO {
@@ -40,5 +41,37 @@ public class SocioDAO {
             return false;
         }
         // La conexión no se cierra aquí, se gestiona centralmente.
+    }
+
+    /**
+     * Busca un socio por su cédula y verifica que esté activo.
+     * @param cedula La cédula del socio a buscar.
+     * @return Un objeto Socio si se encuentra y está activo, de lo contrario null.
+     */
+
+    public Socio buscarPorCedula(String cedula) {
+        Socio socio = null;
+        String sql = "SELECT * FROM socios WHERE cedula = ? AND estado_socio = 'ACTIVO'";
+        Connection con = ConexionBD.getConexion();
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, cedula);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    socio = new Socio(); // Usamos un constructor vacío
+                    socio.setId(rs.getInt("id"));
+                    socio.setCedula(rs.getString("cedula"));
+                    socio.setNombre(rs.getString("nombre"));
+                    socio.setApellido(rs.getString("apellido"));
+                    socio.setEmail(rs.getString("email"));
+                    socio.setTelefono(rs.getString("telefono"));
+                    socio.setEstadoSocio(rs.getString("estado_socio"));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar socio por cédula: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return socio;
     }
 }

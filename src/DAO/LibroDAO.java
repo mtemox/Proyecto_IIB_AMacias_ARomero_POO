@@ -5,8 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 public class LibroDAO {
 
@@ -57,5 +57,43 @@ public class LibroDAO {
         }
 
         return libros;
+    }
+
+    /**
+     * Busca un libro por su ISBN y verifica que haya disponibles.
+     * @param isbn El ISBN del libro a buscar.
+     * @return Un objeto Libro si se encuentra y hay disponibles, de lo contrario null.
+     */
+
+    public Libro buscarPorIsbn(String isbn) {
+        Libro libro = null;
+        // La consulta es similar a la de obtener todos, para traer también el autor.
+        String sql = "SELECT " +
+                "    l.id, l.titulo, l.portada_url, l.cantidad_disponible, " +
+                "    STRING_AGG(a.nombre || ' ' || a.apellido, ', ') AS autores " +
+                "FROM libros l " +
+                "LEFT JOIN libros_autores la ON l.id = la.libro_id " +
+                "LEFT JOIN autores a ON la.autor_id = a.id " +
+                "WHERE l.isbn = ? AND l.cantidad_disponible > 0 " +
+                "GROUP BY l.id";
+
+        Connection con = ConexionBD.getConexion();
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, isbn);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    libro = new Libro();
+                    libro.setId(rs.getInt("id"));
+                    libro.setTitulo(rs.getString("titulo"));
+                    libro.setCantidadDisponible(rs.getInt("cantidad_disponible"));
+                    libro.setAutores(rs.getString("autores"));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar libro por ISBN: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return libro;
     }
 }

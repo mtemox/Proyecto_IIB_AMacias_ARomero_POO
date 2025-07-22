@@ -27,6 +27,8 @@ public class Socio {
         this.estadoSocio = "ACTIVO";
     }
 
+    // Constructor vacio
+    public Socio() {}
 
     // Getter y setter de los atributos
     public int getId() {
