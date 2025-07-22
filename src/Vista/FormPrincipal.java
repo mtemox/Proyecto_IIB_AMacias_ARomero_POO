@@ -1,6 +1,8 @@
 package Vista;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class FormPrincipal extends JFrame {
     private JPanel panelPrincipal;
@@ -40,7 +42,17 @@ public class FormPrincipal extends JFrame {
         setContentPane(panelPrincipal);
         pack();
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
+
+
+        btnGestionLibros.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PanelGestionLibros panel = new PanelGestionLibros();
+                mostrarPanel(panel.getPanel()); // Usas tu metodo para cambiar de panel
+            }
+        });
     }
 
 

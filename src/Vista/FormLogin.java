@@ -14,6 +14,7 @@ public class FormLogin extends JFrame {
     private JPasswordField txtPassword;
     private JLabel lblLogo;
     private JButton lblRegistrarse;
+    private JLabel lblLogoTitle;
     java.net.URL imageUrl = getClass().getResource("/resources/logo.png");
 
     public FormLogin() {
@@ -23,22 +24,32 @@ public class FormLogin extends JFrame {
         if (imageUrl != null) {
             // 1. Crea el ImageIcon original
             ImageIcon originalIcon = new ImageIcon(imageUrl);
+            ImageIcon originalIcon2 = new ImageIcon(imageUrl);
             // 2. Define el nuevo tamaño que deseas para la imagen
             int nuevoAncho = 200; // Por ejemplo, 100 píxeles de ancho
             int nuevoAlto = 200;  // Por ejemplo, 100 píxeles de alto
+
+            int nuevoAncho2 = 50; // Por ejemplo, 100 píxeles de ancho
+            int nuevoAlto2 = 50;  // Por ejemplo, 100 píxeles de alto
+
             // 3. Obtiene la 'Image' del ImageIcon original y la escala
             //    Image.SCALE_SMOOTH le da mayor calidad al redimensionamiento.
             java.awt.Image imagenOriginal = originalIcon.getImage();
+            java.awt.Image imagenOriginal2 = originalIcon2.getImage();
             java.awt.Image imagenRedimensionada = imagenOriginal.getScaledInstance(nuevoAncho, nuevoAlto, java.awt.Image.SCALE_SMOOTH);
+            java.awt.Image imagenRedimensionada2 = imagenOriginal2.getScaledInstance(nuevoAncho2, nuevoAlto2, java.awt.Image.SCALE_SMOOTH);
             // 4. Crea un nuevo ImageIcon a partir de la imagen ya redimensionada
             ImageIcon iconoRedimensionado = new ImageIcon(imagenRedimensionada);
+            ImageIcon iconoRedimensionado2 = new ImageIcon(imagenRedimensionada2);
             // 5. Asigna el icono final (ya con el tamaño correcto) a tu JLabel
             lblLogo.setIcon(iconoRedimensionado);
+            lblLogoTitle.setIcon(iconoRedimensionado2);
         } else {
             System.err.println("Error: No se encontró la imagen en la ruta especificada.");
         }
 
-        pack();
+        setSize(833, 500);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
 
