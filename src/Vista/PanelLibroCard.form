@@ -21,6 +21,8 @@
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <enabled value="true"/>
+          <font name="Montserrat" size="16" style="1"/>
           <text value="Título del Libro"/>
         </properties>
       </component>
@@ -29,6 +31,8 @@
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <enabled value="true"/>
+          <font name="Montserrat" size="16" style="0"/>
           <text value="Autor del Libro"/>
         </properties>
       </component>
@@ -37,6 +41,8 @@
           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <enabled value="true"/>
+          <font name="Montserrat" size="16" style="0"/>
           <text value="Disponibles: 5"/>
         </properties>
       </component>
@@ -45,6 +51,7 @@
           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <font name="Montserrat" size="14" style="0"/>
           <text value="Ver Detalles"/>
         </properties>
       </component>

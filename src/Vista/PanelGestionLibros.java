@@ -17,7 +17,7 @@ public class PanelGestionLibros {
         // Establecemos un layout de tipo rejilla para organizar las tarjetas
         // GridLayout(filas, columnas, espacio_horizontal, espacio_vertical)
         // Poner 0 en filas significa "tantas filas como sea necesario"
-        panelGridDeLibros.setLayout(new GridLayout(0, 4, 15, 15));
+        panelGridDeLibros.setLayout(new GridLayout(0, 3, 15, 15));
 
         // Llamamos al metodo para cargar los datos en cuanto se crea el panel
         cargarLibros();

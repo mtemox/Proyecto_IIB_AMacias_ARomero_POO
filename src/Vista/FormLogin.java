@@ -16,17 +16,18 @@ public class FormLogin extends JFrame {
     private JButton lblRegistrarse;
     private JLabel lblLogoTitle;
     java.net.URL imageUrl = getClass().getResource("/resources/logo.png");
+    java.net.URL imageUrl2 = getClass().getResource("/resources/logo2.png");
 
     public FormLogin() {
         setTitle("Iniciar Sesión");
         setContentPane(panelLogin);
 
-        if (imageUrl != null) {
+        if (imageUrl != null && imageUrl2 != null) {
             // 1. Crea el ImageIcon original
-            ImageIcon originalIcon = new ImageIcon(imageUrl);
+            ImageIcon originalIcon = new ImageIcon(imageUrl2);
             ImageIcon originalIcon2 = new ImageIcon(imageUrl);
             // 2. Define el nuevo tamaño que deseas para la imagen
-            int nuevoAncho = 200; // Por ejemplo, 100 píxeles de ancho
+            int nuevoAncho = 250; // Por ejemplo, 100 píxeles de ancho
             int nuevoAlto = 200;  // Por ejemplo, 100 píxeles de alto
 
             int nuevoAncho2 = 50; // Por ejemplo, 100 píxeles de ancho
