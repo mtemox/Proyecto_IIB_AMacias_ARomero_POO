@@ -2,6 +2,7 @@ package Vista;
 
 import Utils.SessionManager;
 import Modelo.UsuarioSistema;
+import Modelo.Libro;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -141,6 +142,16 @@ public class FormPrincipal extends JFrame {
             new FormLogin();
             dispose();
         }
+    }
+
+    /**
+     * Navega al panel de nuevo préstamo, precargando un libro.
+     * @param libro El libro que se va a prestar.
+     */
+
+    public void navegarAPrestamosConLibro(Libro libro) {
+        PanelNuevoPrestamo panel = new PanelNuevoPrestamo(libro);
+        mostrarPanel(panel.getPanelNuevoPrestamo());
     }
 
 }

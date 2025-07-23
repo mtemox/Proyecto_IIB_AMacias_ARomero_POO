@@ -96,4 +96,53 @@ public class LibroDAO {
         }
         return libro;
     }
+
+    /**
+     * Obtiene todos los detalles de un libro específico por su ID.
+     * @param libroId El ID del libro a buscar.
+     * @return Un objeto Libro con todos sus datos, o null si no se encuentra.
+     */
+
+    public Libro obtenerDetallesLibro(long libroId) {
+        Libro libro = null;
+        String sql = "SELECT " +
+                "  l.*, " +
+                "  STRING_AGG(a.nombre || ' ' || a.apellido, ', ') AS autores, " +
+                "  c.nombre AS categoria, c.descripcion AS descripcion_categoria, " +
+                "  e.nombre AS editorial " +
+                "FROM libros l " +
+                "LEFT JOIN libros_autores la ON l.id = la.libro_id " +
+                "LEFT JOIN autores a ON la.autor_id = a.id " +
+                "LEFT JOIN categorias c ON l.categoria_id = c.id " +
+                "LEFT JOIN editoriales e ON l.editorial_id = e.id " +
+                "WHERE l.id = ? " +
+                "GROUP BY l.id, c.nombre, c.descripcion, e.nombre";
+
+        Connection con = ConexionBD.getConexion();
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setLong(1, libroId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    libro = new Libro();
+                    libro.setId(rs.getLong("id"));
+                    libro.setIsbn(rs.getString("isbn"));
+                    libro.setTitulo(rs.getString("titulo"));
+                    libro.setAnioPublicacion(rs.getInt("anio_publicacion"));
+                    libro.setPortadaUrl(rs.getString("portada_url"));
+                    libro.setCantidadTotal(rs.getInt("cantidad_total"));
+                    libro.setCantidadDisponible(rs.getInt("cantidad_disponible"));
+                    libro.setAutores(rs.getString("autores"));
+                    libro.setCategoria(rs.getString("categoria"));
+                    libro.setDescripcionCategoria(rs.getString("descripcion_categoria"));
+                    libro.setEditorial(rs.getString("editorial"));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener los detalles del libro: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return libro;
+    }
+
 }

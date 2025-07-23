@@ -32,6 +32,7 @@ public class PanelNuevoPrestamo extends JFrame{
         return PanelNuevoPrestamo;
     }
 
+    // Constructor vacío
     public PanelNuevoPrestamo() {
 
         // Establecer la fecha de devolución estimada (ej. 15 días desde hoy)
@@ -155,4 +156,19 @@ public class PanelNuevoPrestamo extends JFrame{
     public JPanel getPanel() {
         return PanelNuevoPrestamo;
     }
+
+    /**
+     * Constructor para iniciar el panel con un libro ya seleccionado.
+     * @param libro El libro a prestar.
+     */
+
+    public PanelNuevoPrestamo(Libro libro) {
+        this(); // Llama al constructor por defecto para inicializar todo
+        this.libroSeleccionado = libro;
+        txtBusquedaIsbnLibro.setText(libro.getIsbn());
+        // Actualizamos la UI con la info del libro
+        lblInfoLibro.setText("<html><b>Libro:</b> " + libro.getTitulo() + "<br><b>Disponibles:</b> " + libro.getCantidadDisponible() + "</html>");
+        validarEstadoPrestamo();
+    }
+
 }

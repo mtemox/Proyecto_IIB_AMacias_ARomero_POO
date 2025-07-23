@@ -34,7 +34,7 @@ public class PrestamoDAO {
 
             // 1. Insertar el préstamo
             try (PreparedStatement psPrestamo = con.prepareStatement(sqlInsertPrestamo)) {
-                psPrestamo.setInt(1, prestamo.getLibroId());
+                psPrestamo.setLong(1, prestamo.getLibroId());
                 psPrestamo.setLong(2, prestamo.getSocioId());
                 psPrestamo.setLong(3, prestamo.getUsuarioSistemaId()); // Idealmente, el ID del usuario logueado
                 psPrestamo.setDate(4, java.sql.Date.valueOf(prestamo.getFechaPrestamo()));
@@ -45,7 +45,7 @@ public class PrestamoDAO {
 
             // 2. Actualizar la cantidad del libro
             try (PreparedStatement psLibro = con.prepareStatement(sqlUpdateLibro)) {
-                psLibro.setInt(1, prestamo.getLibroId());
+                psLibro.setLong(1, prestamo.getLibroId());
                 psLibro.executeUpdate();
             }
 

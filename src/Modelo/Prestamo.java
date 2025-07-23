@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class Prestamo {
 
     private int id;
-    private int libroId;
+    private long libroId;
     private long socioId;
     private long usuarioSistemaId;
     private LocalDate fechaPrestamo;
@@ -26,11 +26,11 @@ public class Prestamo {
         this.id = id;
     }
 
-    public int getLibroId() {
+    public long getLibroId() {
         return libroId;
     }
 
-    public void setLibroId(int libroId) {
+    public void setLibroId(long libroId) {
         this.libroId = libroId;
     }
 

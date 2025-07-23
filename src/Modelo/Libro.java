@@ -2,14 +2,18 @@ package Modelo;
 
 public class Libro {
 
-    private int id;
+    private long id;
+    private String isbn;
     private String titulo;
+    private int anioPublicacion;
     private String portadaUrl;
+    private int cantidadTotal;
     private int cantidadDisponible;
 
     // Estos campos se llenarán con los JOINs de la base de datos
     private String autores; // Puede tener varios autores, los unimos en un String
     private String categoria;
+    private String descripcionCategoria;
     private String editorial;
 
     // Constructor vacío
@@ -18,12 +22,44 @@ public class Libro {
 
     // Getters y Setters para todos los campos
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public int getAnioPublicacion() {
+        return anioPublicacion;
+    }
+
+    public void setAnioPublicacion(int anioPublicacion) {
+        this.anioPublicacion = anioPublicacion;
+    }
+
+    public int getCantidadTotal() {
+        return cantidadTotal;
+    }
+
+    public void setCantidadTotal(int cantidadTotal) {
+        this.cantidadTotal = cantidadTotal;
+    }
+
+    public String getDescripcionCategoria() {
+        return descripcionCategoria;
+    }
+
+    public void setDescripcionCategoria(String descripcionCategoria) {
+        this.descripcionCategoria = descripcionCategoria;
     }
 
     public String getTitulo() {
