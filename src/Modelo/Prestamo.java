@@ -6,8 +6,8 @@ public class Prestamo {
 
     private int id;
     private int libroId;
-    private int socioId;
-    private int usuarioSistemaId;
+    private long socioId;
+    private long usuarioSistemaId;
     private LocalDate fechaPrestamo;
     private LocalDate fechaDevolucionEstimada;
     private LocalDate fechaDevolucionReal;
@@ -34,19 +34,19 @@ public class Prestamo {
         this.libroId = libroId;
     }
 
-    public int getSocioId() {
+    public long getSocioId() {
         return socioId;
     }
 
-    public void setSocioId(int socioId) {
+    public void setSocioId(long socioId) {
         this.socioId = socioId;
     }
 
-    public int getUsuarioSistemaId() {
+    public long getUsuarioSistemaId() {
         return usuarioSistemaId;
     }
 
-    public void setUsuarioSistemaId(int usuarioSistemaId) {
+    public void setUsuarioSistemaId(long usuarioSistemaId) {
         this.usuarioSistemaId = usuarioSistemaId;
     }
 

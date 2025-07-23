@@ -6,6 +6,7 @@ import DAO.SocioDAO;
 import Modelo.Libro;
 import Modelo.Prestamo;
 import Modelo.Socio;
+import Utils.SessionManager;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -118,7 +119,14 @@ public class PanelNuevoPrestamo extends JFrame{
         nuevoPrestamo.setLibroId(libroSeleccionado.getId());
         nuevoPrestamo.setFechaPrestamo(LocalDate.now());
         nuevoPrestamo.setFechaDevolucionEstimada(LocalDate.now().plusDays(15));
-        nuevoPrestamo.setUsuarioSistemaId(1); // Es el ID del usuario que ha iniciado sesión
+
+
+        //nuevoPrestamo.setUsuarioSistemaId(1); // Es el ID del usuario que ha iniciado sesión
+
+        // --- LÍNEA MODIFICADA ---
+        // Obtener el ID del usuario que ha iniciado sesión desde el SessionManager
+        nuevoPrestamo.setUsuarioSistemaId(SessionManager.getInstance().getUsuarioLogueado().getId());
+        // -
 
         // Llamar al DAO para registrarlo
         PrestamoDAO prestamoDAO = new PrestamoDAO();

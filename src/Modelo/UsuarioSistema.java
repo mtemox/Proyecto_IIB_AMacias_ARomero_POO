@@ -1,7 +1,7 @@
 package Modelo;
 
 public class UsuarioSistema {
-    private int id;
+    private long id;
     private String username;
     private String password; // Solo para guardar la contraseña encriptada de la BD
     private String rol;
@@ -17,13 +17,12 @@ public class UsuarioSistema {
     }
 
     // --- CONSTRUCTORES, GETTERS Y SETTERS ---
-
     // getters y setters
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

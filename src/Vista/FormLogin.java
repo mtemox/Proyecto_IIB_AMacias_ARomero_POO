@@ -2,6 +2,7 @@ package Vista;
 
 import DAO.UsuarioSistemaDAO;
 import Modelo.UsuarioSistema;
+import Utils.SessionManager;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -65,6 +66,7 @@ public class FormLogin extends JFrame {
 
             }
         });
+
         btnIngresar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -85,6 +87,7 @@ public class FormLogin extends JFrame {
 
                     if (passwordIngresada.equals(usuarioEncontrado.getPassword())) { // Comparación simple (NO SEGURA)
                         JOptionPane.showMessageDialog(null, "¡Bienvenido " + usuarioEncontrado.getRol() + "!", "Login Exitoso", JOptionPane.INFORMATION_MESSAGE);
+                        SessionManager.getInstance().setUsuarioLogueado(usuarioEncontrado);
                         // Abrir el FormPrincipal
                         new FormPrincipal();
                         dispose(); // Cierra la ventana de login

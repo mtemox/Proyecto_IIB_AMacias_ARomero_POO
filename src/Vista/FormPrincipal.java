@@ -1,5 +1,8 @@
 package Vista;
 
+import Utils.SessionManager;
+import Modelo.UsuarioSistema;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,9 +49,12 @@ public class FormPrincipal extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
 
+        configurarSegunRol();
+
         PanelBienvenida panelBienvenida = new PanelBienvenida();
         mostrarPanel(panelBienvenida.getPanelBienvenida());
 
+        // Accion para el boton btnGestionLibros
         btnGestionLibros.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -56,6 +62,8 @@ public class FormPrincipal extends JFrame {
                 mostrarPanel(panel.getPanel()); // Usas tu metodo para cambiar de panel
             }
         });
+
+        // Accion para el boton btnGestionLibros
         btnNuevoPrestamo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -63,6 +71,76 @@ public class FormPrincipal extends JFrame {
                 mostrarPanel(panelNuevoPrestamo.getPanelNuevoPrestamo());
             }
         });
+
+        // Accion para el boton btnGestionLibros
+        btnGestionSocios.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PanelGestionSocios panel = new PanelGestionSocios();
+                mostrarPanel(panel.getPanel()); // Usas tu metodo para cambiar de panel
+            }
+
+        // Accion para el boton btnCerrarSesion
+        });
+        btnCerrarSesion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                int confirmacion = JOptionPane.showConfirmDialog(
+                        FormPrincipal.this,
+                        "¿Estás seguro de que quieres cerrar la sesión?",
+                        "Confirmar Cierre de Sesión",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (confirmacion == JOptionPane.YES_OPTION) {
+                    SessionManager.getInstance().cerrarSesion(); // Limpiar la sesión
+                    new FormLogin(); // Volver a la ventana de login
+                    dispose(); // Cerrar la ventana principal
+                }
+
+            }
+        });
+
+        // Accion para el boton btnGestionUsuarios
+        btnGestionUsuarios.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PanelGestionUsuarios panel = new PanelGestionUsuarios();
+                mostrarPanel(panel.getPanel());
+            }
+        });
+
+        // Accion para el boton btnRegistrarDevolucion
+        btnRegistrarDevolucion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PanelDevolucion panel = new PanelDevolucion();
+                mostrarPanel(panel.getPanel());
+            }
+        });
+    }
+
+    // --- METODO ---
+    private void configurarSegunRol() {
+        UsuarioSistema usuario = SessionManager.getInstance().getUsuarioLogueado();
+        if (usuario != null) {
+            String rol = usuario.getRol();
+
+            // Por defecto, el bibliotecario puede hacer casi todo
+            // El administrador tiene acceso a un panel extra: Gestión de Usuarios.
+            if ("BIBLIOTECARIO".equals(rol)) {
+                btnGestionUsuarios.setEnabled(false); // Deshabilitar para el bibliotecario
+                btnGestionUsuarios.setToolTipText("Acceso solo para Administradores");
+            } else if ("ADMINISTRADOR".equals(rol)) {
+                btnGestionUsuarios.setEnabled(true); // Habilitado para el admin
+            }
+        } else {
+            // Si por alguna razón no hay usuario en sesión, volver al login
+            JOptionPane.showMessageDialog(this, "Error de sesión. Por favor, inicie sesión de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
+            new FormLogin();
+            dispose();
+        }
     }
 
 }

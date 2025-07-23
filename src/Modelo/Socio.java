@@ -3,7 +3,7 @@ package Modelo;
 import java.time.LocalDate;
 
 public class Socio {
-    private int id;
+    private long id;
     private String cedula;
     private String nombre;
     private String apellido;
@@ -31,11 +31,11 @@ public class Socio {
     public Socio() {}
 
     // Getter y setter de los atributos
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
