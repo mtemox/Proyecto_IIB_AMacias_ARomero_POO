@@ -29,7 +29,7 @@ public class ConexionBD {
                     Class.forName("org.postgresql.Driver");
 
                     conexion = DriverManager.getConnection("jdbc:postgresql://sibibli-13617.j77.aws-us-east-1.cockroachlabs.cloud:26257/SIBIBLI?sslmode=verify-full&password=_KaHpoLnCkm9ZNdE9YmkRA&user=ariel", USUARIO, CONTRASENA);
-                    System.out.println("¡Conexión a Neon (PostgreSQL) exitosa!");
+                    System.out.println("¡Conexión a (PostgreSQL) exitosa!");
 
                 } catch (ClassNotFoundException e) {
                     System.err.println("Error: No se encontró el driver de PostgreSQL. ¿Añadiste el .jar al proyecto?");

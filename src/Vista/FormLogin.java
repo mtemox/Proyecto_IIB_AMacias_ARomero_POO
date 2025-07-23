@@ -17,7 +17,7 @@ public class FormLogin extends JFrame {
     private JButton lblRegistrarse;
     private JLabel lblLogoTitle;
     java.net.URL imageUrl = getClass().getResource("/resources/logo.png");
-    java.net.URL imageUrl2 = getClass().getResource("/resources/logo2.png");
+    java.net.URL imageUrl2 = getClass().getResource("/resources/logo4.jpg");
 
     public FormLogin() {
         setTitle("Iniciar Sesión");
@@ -28,11 +28,11 @@ public class FormLogin extends JFrame {
             ImageIcon originalIcon = new ImageIcon(imageUrl2);
             ImageIcon originalIcon2 = new ImageIcon(imageUrl);
             // 2. Define el nuevo tamaño que deseas para la imagen
-            int nuevoAncho = 250; // Por ejemplo, 100 píxeles de ancho
-            int nuevoAlto = 200;  // Por ejemplo, 100 píxeles de alto
+            int nuevoAncho = 540; // Por ejemplo, 100 píxeles de ancho
+            int nuevoAlto = 860;  // Por ejemplo, 100 píxeles de alto
 
-            int nuevoAncho2 = 50; // Por ejemplo, 100 píxeles de ancho
-            int nuevoAlto2 = 50;  // Por ejemplo, 100 píxeles de alto
+            int nuevoAncho2 = 75; // Por ejemplo, 100 píxeles de ancho
+            int nuevoAlto2 = 75;  // Por ejemplo, 100 píxeles de alto
 
             // 3. Obtiene la 'Image' del ImageIcon original y la escala
             //    Image.SCALE_SMOOTH le da mayor calidad al redimensionamiento.
@@ -50,7 +50,7 @@ public class FormLogin extends JFrame {
             System.err.println("Error: No se encontró la imagen en la ruta especificada.");
         }
 
-        setSize(833, 500);
+        setSize(1140, 860);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);

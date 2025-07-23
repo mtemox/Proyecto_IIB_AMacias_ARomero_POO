@@ -19,6 +19,9 @@ public class FormPrincipal extends JFrame {
     private JButton btnVerReportes;
     private JButton btnCerrarSesion;
     private JPanel panelContenido;
+    private JLabel lblLogo;
+
+    java.net.URL imageUrl = getClass().getResource("/resources/logo.png");
 
     // Metodo para mostrar los paneles
     private void mostrarPanel(JPanel panel) {
@@ -44,6 +47,25 @@ public class FormPrincipal extends JFrame {
     public FormPrincipal() {
         setTitle("SIBIBLI");
         setContentPane(panelPrincipal);
+
+        if (imageUrl != null) {
+            // 1. Crea el ImageIcon original
+            ImageIcon originalIcon = new ImageIcon(imageUrl);
+            // 2. Define el nuevo tamaño que deseas para la imagen
+            int nuevoAncho = 75; // Por ejemplo, 100 píxeles de ancho
+            int nuevoAlto = 75;  // Por ejemplo, 100 píxeles de alto
+            // 3. Obtiene la 'Image' del ImageIcon original y la escala
+            //    Image.SCALE_SMOOTH le da mayor calidad al redimensionamiento.
+            java.awt.Image imagenOriginal = originalIcon.getImage();
+            java.awt.Image imagenRedimensionada = imagenOriginal.getScaledInstance(nuevoAncho, nuevoAlto, java.awt.Image.SCALE_SMOOTH);
+            // 4. Crea un nuevo ImageIcon a partir de la imagen ya redimensionada
+            ImageIcon iconoRedimensionado = new ImageIcon(imagenRedimensionada);
+            // 5. Asigna el icono final (ya con el tamaño correcto) a tu JLabel
+            lblLogo.setIcon(iconoRedimensionado);
+        } else {
+            System.err.println("Error: No se encontró la imagen en la ruta especificada.");
+        }
+
         setSize(1500, 720);
         //setExtendedState(JFrame.MAXIMIZED_BOTH); // Para iniciar maximizado
         setLocationRelativeTo(null);
