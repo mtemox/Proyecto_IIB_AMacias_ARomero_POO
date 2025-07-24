@@ -67,7 +67,7 @@ public class FormPrincipal extends JFrame {
             System.err.println("Error: No se encontró la imagen en la ruta especificada.");
         }
 
-        setSize(1500, 720);
+        setSize(1450, 720);
         //setExtendedState(JFrame.MAXIMIZED_BOTH); // Para iniciar maximizado
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);

@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Proyecto_IIB_AMacias_ARomero_POO:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Proyecto_IIB_AMacias_ARomero_POO_jar</output-path>
+    <root id="archive" name="Proyecto_IIB_AMacias_ARomero_POO.jar">
+      <element id="module-output" name="Proyecto_IIB_AMacias_ARomero_POO" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../Conector/mysql-connector-j-9.3.0/mysql-connector-j-9.3.0/mysql-connector-j-9.3.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
