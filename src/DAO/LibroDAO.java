@@ -310,4 +310,54 @@ public class LibroDAO {
         return reporte;
     }
 
+    /**
+     * Busca libros cuyo título, autor, ISBN, categoría o editorial coincidan con el término de búsqueda.
+     * Si el término de búsqueda está vacío, devuelve todos los libros.
+     * @param termino El texto a buscar.
+     * @return Una lista de objetos Libro que coinciden con la búsqueda.
+     */
+    public List<Libro> buscarLibros(String termino) {
+        List<Libro> libros = new ArrayList<>();
+        // La consulta es la misma que obtenerTodosLosLibros pero con un WHERE adicional
+        String sql = "SELECT " +
+                "  l.id, l.titulo, l.portada_url, l.cantidad_disponible, " +
+                "  GROUP_CONCAT(CONCAT(a.nombre, ' ', a.apellido) SEPARATOR ', ') AS autores, " +
+                "  c.nombre AS categoria, " +
+                "  e.nombre AS editorial " +
+                "FROM libros l " +
+                "LEFT JOIN libros_autores la ON l.id = la.libro_id " +
+                "LEFT JOIN autores a ON la.autor_id = a.id " +
+                "LEFT JOIN categorias c ON l.categoria_id = c.id " +
+                "LEFT JOIN editoriales e ON l.editorial_id = e.id " +
+                "WHERE l.titulo LIKE ? OR a.nombre LIKE ? OR a.apellido LIKE ? OR l.isbn LIKE ? " + // <-- Cláusula de búsqueda
+                "GROUP BY l.id, c.nombre, e.nombre " +
+                "ORDER BY l.titulo";
+
+        Connection con = ConexionBD.getConexion();
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            String parametroBusqueda = "%" + termino + "%"; // Añadimos wildcards para búsqueda parcial
+            ps.setString(1, parametroBusqueda);
+            ps.setString(2, parametroBusqueda);
+            ps.setString(3, parametroBusqueda);
+            ps.setString(4, parametroBusqueda);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Libro libro = new Libro();
+                libro.setId(rs.getLong("id"));
+                libro.setTitulo(rs.getString("titulo"));
+                libro.setPortadaUrl(rs.getString("portada_url"));
+                libro.setCantidadDisponible(rs.getInt("cantidad_disponible"));
+                libro.setAutores(rs.getString("autores"));
+                libro.setCategoria(rs.getString("categoria"));
+                libro.setEditorial(rs.getString("editorial"));
+                libros.add(libro);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar libros: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return libros;
+    }
+
 }
