@@ -16,7 +16,8 @@ public class PenalizacionDAO {
      * @throws SQLException si ocurre un error.
      */
     public boolean registrarPenalizacion(Penalizacion penalizacion, Connection con) throws SQLException {
-        String sql = "INSERT INTO penalizaciones (prestamo_id, socio_id, monto, fecha_generacion, estado_penalizacion, observaciones) VALUES (?, ?, ?, ?, ?::estado_penalizacion_tipo, ?)";
+        // <-- CAMBIO: Se elimina el casting de tipo "::estado_penalizacion_tipo".
+        String sql = "INSERT INTO penalizaciones (prestamo_id, socio_id, monto, fecha_generacion, estado_penalizacion, observaciones) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setLong(1, penalizacion.getPrestamoId());

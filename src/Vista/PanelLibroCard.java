@@ -16,16 +16,39 @@ public class PanelLibroCard extends JFrame {
     private JLabel lblAutorLibro;
     private JLabel lblDisponibilidad;
     private JButton btnVerDetalles;
+    private JButton btnEditar;
+    private JButton btnEliminar;
 
     private Libro libro; // Almacenamos el objeto libro
     private LibroDAO libroDAO;
+    // Campo para guardar la referencia al panel que nos creó
+    private final PanelGestionLibros panelGestionPadre;
 
-    public PanelLibroCard() {
+    public PanelLibroCard(PanelGestionLibros panelPadre) {
+        this.panelGestionPadre = panelPadre; // Guardamos la referencia
         this.libroDAO = new LibroDAO();
+
+        // Accion para el boton btnVerDetalles
         btnVerDetalles.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mostrarDetalles();
+            }
+        });
+
+        // Accion para el boton btnEditar
+        btnEditar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editarLibro();
+            }
+        });
+
+        // Accion para el boton btnEliminar
+        btnEliminar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eliminarLibro();
             }
         });
     }
@@ -121,4 +144,35 @@ public class PanelLibroCard extends JFrame {
             }
         }
     }
+
+    // Metodo
+    private void editarLibro() {
+        if (this.panelGestionPadre != null) {
+            this.panelGestionPadre.abrirFormularioLibro(this.libro);
+        }
+    }
+
+    // Metodo
+    private void eliminarLibro() {
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this.panelCard,
+                "¿Estás seguro de que quieres eliminar el libro '" + libro.getTitulo() + "'?",
+                "Confirmar Eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            boolean exito = libroDAO.eliminarLibro(this.libro.getId());
+            if (exito) {
+                JOptionPane.showMessageDialog(this.panelCard, "Libro eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                if (this.panelGestionPadre != null) {
+                    this.panelGestionPadre.cargarLibros(); // Refrescar la vista principal
+                }
+            } else {
+                JOptionPane.showMessageDialog(this.panelCard, "No se pudo eliminar el libro.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
 }

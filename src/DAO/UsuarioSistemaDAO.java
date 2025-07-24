@@ -76,7 +76,8 @@ public class UsuarioSistemaDAO {
      */
 
     public boolean registrarUsuario(UsuarioSistema usuario) {
-        String sql = "INSERT INTO usuarios_sistema (username, password, rol, estado) VALUES (?, ?, ?::rol_usuario, ?::estado_general)";
+        // <-- CAMBIO: Se eliminan los castings "::rol_usuario" y "::estado_general".
+        String sql = "INSERT INTO usuarios_sistema (username, password, rol, estado) VALUES (?, ?, ?, ?)";
         Connection con = ConexionBD.getConexion();
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -107,7 +108,8 @@ public class UsuarioSistemaDAO {
 
     public boolean actualizarUsuario(UsuarioSistema usuario) {
         // La contraseña se actualiza solo si se proporciona una nueva.
-        String sql = "UPDATE usuarios_sistema SET rol = ?::rol_usuario, estado = ?::estado_general"
+        // <-- CAMBIO: Se eliminan los castings y se simplifica la consulta.
+        String sql = "UPDATE usuarios_sistema SET rol = ?, estado = ?"
                 + (usuario.getPassword() != null && !usuario.getPassword().isEmpty() ? ", password = ?" : "")
                 + " WHERE id = ?";
         Connection con = ConexionBD.getConexion();

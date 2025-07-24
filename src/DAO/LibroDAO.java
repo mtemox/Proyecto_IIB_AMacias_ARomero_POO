@@ -1,10 +1,9 @@
 package DAO;
 
 import Modelo.Libro;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -22,9 +21,10 @@ public class LibroDAO {
 
         // Esta consulta usa JOINs para unir las tablas y STRING_AGG para juntar
         // los nombres de los autores si un libro tiene más de uno.
+        // <-- CAMBIO: Se usa GROUP_CONCAT en lugar de STRING_AGG y CONCAT() para unir cadenas.
         String sql = "SELECT " +
                 "    l.id, l.titulo, l.portada_url, l.cantidad_disponible, " +
-                "    STRING_AGG(a.nombre || ' ' || a.apellido, ', ') AS autores, " +
+                "    GROUP_CONCAT(CONCAT(a.nombre, ' ', a.apellido) SEPARATOR ', ') AS autores, " +
                 "    c.nombre AS categoria, " +
                 "    e.nombre AS editorial " +
                 "FROM libros l " +
@@ -68,9 +68,10 @@ public class LibroDAO {
     public Libro buscarPorIsbn(String isbn) {
         Libro libro = null;
         // La consulta es similar a la de obtener todos, para traer también el autor.
+        // <-- CAMBIO: Se usa GROUP_CONCAT y CONCAT().
         String sql = "SELECT " +
                 "    l.id, l.titulo, l.portada_url, l.cantidad_disponible, " +
-                "    STRING_AGG(a.nombre || ' ' || a.apellido, ', ') AS autores " +
+                "    GROUP_CONCAT(CONCAT(a.nombre, ' ', a.apellido) SEPARATOR ', ') AS autores " +
                 "FROM libros l " +
                 "LEFT JOIN libros_autores la ON l.id = la.libro_id " +
                 "LEFT JOIN autores a ON la.autor_id = a.id " +
@@ -105,18 +106,20 @@ public class LibroDAO {
 
     public Libro obtenerDetallesLibro(long libroId) {
         Libro libro = null;
+        // <-- CAMBIO: La consulta ahora también pide los IDs de las tablas relacionadas
         String sql = "SELECT " +
                 "  l.*, " +
-                "  STRING_AGG(a.nombre || ' ' || a.apellido, ', ') AS autores, " +
-                "  c.nombre AS categoria, c.descripcion AS descripcion_categoria, " +
-                "  e.nombre AS editorial " +
+                "  c.id AS categoria_id, c.nombre AS categoria, c.descripcion AS descripcion_categoria, " +
+                "  e.id AS editorial_id, e.nombre AS editorial, " +
+                "  GROUP_CONCAT(a.id SEPARATOR ',') AS autores_ids, " +
+                "  GROUP_CONCAT(CONCAT(a.nombre, ' ', a.apellido) SEPARATOR ', ') AS autores " +
                 "FROM libros l " +
                 "LEFT JOIN libros_autores la ON l.id = la.libro_id " +
                 "LEFT JOIN autores a ON la.autor_id = a.id " +
                 "LEFT JOIN categorias c ON l.categoria_id = c.id " +
                 "LEFT JOIN editoriales e ON l.editorial_id = e.id " +
                 "WHERE l.id = ? " +
-                "GROUP BY l.id, c.nombre, c.descripcion, e.nombre";
+                "GROUP BY l.id, c.id, e.id"; // Agrupamos por los IDs también
 
         Connection con = ConexionBD.getConexion();
 
@@ -132,10 +135,21 @@ public class LibroDAO {
                     libro.setPortadaUrl(rs.getString("portada_url"));
                     libro.setCantidadTotal(rs.getInt("cantidad_total"));
                     libro.setCantidadDisponible(rs.getInt("cantidad_disponible"));
+
+                    // Nombres para mostrar
                     libro.setAutores(rs.getString("autores"));
                     libro.setCategoria(rs.getString("categoria"));
                     libro.setDescripcionCategoria(rs.getString("descripcion_categoria"));
                     libro.setEditorial(rs.getString("editorial"));
+
+                    // <-- CAMBIO: Ahora sí poblamos los IDs necesarios para el formulario de edición
+                    libro.setCategoriaId(rs.getInt("categoria_id"));
+                    libro.setEditorialId(rs.getInt("editorial_id"));
+
+                    String autoresIdsStr = rs.getString("autores_ids");
+                    if (autoresIdsStr != null) {
+                        libro.setAutoresIds(Arrays.asList(autoresIdsStr.split(",")));
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -143,6 +157,129 @@ public class LibroDAO {
             e.printStackTrace();
         }
         return libro;
+    }
+
+    public boolean registrarLibro(Libro libro, List<Long> autoresIds) { // <-- CAMBIO 1: de Integer a Long
+        Connection con = ConexionBD.getConexion();
+        // Se pide que la BD devuelva las llaves generadas (el ID del nuevo libro)
+        String sqlLibro = "INSERT INTO libros (isbn, titulo, anio_publicacion, portada_url, cantidad_total, cantidad_disponible, editorial_id, categoria_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sqlLibroAutor = "INSERT INTO libros_autores (libro_id, autor_id) VALUES (?, ?)";
+
+        try {
+            con.setAutoCommit(false); // Iniciar transacción
+
+            // 1. Insertar el libro y obtener su ID generado
+            long libroId;
+            try (PreparedStatement ps = con.prepareStatement(sqlLibro, Statement.RETURN_GENERATED_KEYS)) {
+                ps.setString(1, libro.getIsbn());
+                ps.setString(2, libro.getTitulo());
+                ps.setInt(3, libro.getAnioPublicacion());
+                ps.setString(4, libro.getPortadaUrl());
+                ps.setInt(5, libro.getCantidadTotal());
+                ps.setInt(6, libro.getCantidadDisponible());
+                ps.setLong(7, libro.getEditorialId());
+                ps.setLong(8, libro.getCategoriaId());
+                ps.executeUpdate();
+
+                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        libroId = generatedKeys.getLong(1);
+                    } else {
+                        throw new SQLException("No se pudo obtener el ID del libro creado.");
+                    }
+                }
+            }
+
+            // 2. Insertar las relaciones en la tabla libros_autores
+            try (PreparedStatement ps = con.prepareStatement(sqlLibroAutor)) {
+                for (Long autorId : autoresIds) { // <-- CAMBIO 2: de Integer a Long
+                    ps.setLong(1, libroId);
+                    ps.setLong(2, autorId); // <-- CAMBIO 3: de setInt a setLong
+                    ps.addBatch();
+                }
+                ps.executeBatch();
+            }
+
+            con.commit();
+            return true;
+
+        } catch (SQLException e) {
+            // ... (tu manejo de errores se queda igual)
+            System.err.println("Error en transacción de registro de libro. Revirtiendo cambios...");
+            e.printStackTrace();
+            try { if (con != null) con.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+            return false;
+        } finally {
+            try { if (con != null) con.setAutoCommit(true); } catch (SQLException e) { e.printStackTrace(); }
+        }
+    }
+
+    public boolean actualizarLibro(Libro libro, List<Long> autoresIds) { // <-- CAMBIO 1: de Integer a Long
+        Connection con = ConexionBD.getConexion();
+        String sqlUpdateLibro = "UPDATE libros SET isbn = ?, titulo = ?, anio_publicacion = ?, portada_url = ?, cantidad_total = ?, cantidad_disponible = ?, editorial_id = ?, categoria_id = ? WHERE id = ?";
+        String sqlDeleteAutores = "DELETE FROM libros_autores WHERE libro_id = ?";
+        String sqlInsertAutores = "INSERT INTO libros_autores (libro_id, autor_id) VALUES (?, ?)";
+
+        try {
+            con.setAutoCommit(false);
+
+            // 1. Actualizar los datos del libro
+            try (PreparedStatement ps = con.prepareStatement(sqlUpdateLibro)) {
+                ps.setString(1, libro.getIsbn());
+                ps.setString(2, libro.getTitulo());
+                ps.setInt(3, libro.getAnioPublicacion());
+                ps.setString(4, libro.getPortadaUrl());
+                ps.setInt(5, libro.getCantidadTotal());
+                ps.setInt(6, libro.getCantidadDisponible());
+                ps.setLong(7, libro.getEditorialId());
+                ps.setLong(8, libro.getCategoriaId());
+                ps.setLong(9, libro.getId());
+                ps.executeUpdate();
+            }
+
+            // 2. Borrar los autores antiguos
+            try (PreparedStatement ps = con.prepareStatement(sqlDeleteAutores)) {
+                ps.setLong(1, libro.getId());
+                ps.executeUpdate();
+            }
+
+            // 3. Insertar los nuevos autores
+            try (PreparedStatement ps = con.prepareStatement(sqlInsertAutores)) {
+                for (Long autorId : autoresIds) { // <-- CAMBIO 2: de Integer a Long
+                    ps.setLong(1, libro.getId());
+                    ps.setLong(2, autorId); // <-- CAMBIO 3: de setInt a setLong
+                    ps.addBatch();
+                }
+                ps.executeBatch();
+            }
+
+            con.commit();
+            return true;
+
+        } catch (SQLException e) {
+            // ... (tu manejo de errores se queda igual)
+            System.err.println("Error al actualizar libro. Revirtiendo cambios...");
+            e.printStackTrace();
+            try { if (con != null) con.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+            return false;
+        } finally {
+            try { if (con != null) con.setAutoCommit(true); } catch (SQLException e) { e.printStackTrace(); }
+        }
+    }
+
+
+    public boolean eliminarLibro(long libroId) {
+        String sql = "DELETE FROM libros WHERE id = ?";
+        Connection con = ConexionBD.getConexion();
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setLong(1, libroId);
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar el libro: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

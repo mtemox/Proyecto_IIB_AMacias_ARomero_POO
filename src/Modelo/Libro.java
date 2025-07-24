@@ -1,5 +1,7 @@
 package Modelo;
 
+import java.util.List;
+
 public class Libro {
 
     private long id;
@@ -9,6 +11,11 @@ public class Libro {
     private String portadaUrl;
     private int cantidadTotal;
     private int cantidadDisponible;
+
+    // --- NUEVOS CAMPOS ---
+    private long editorialId;
+    private long categoriaId;
+    private java.util.List<String> autoresIds; // Para manejar los IDs en la edición
 
     // Estos campos se llenarán con los JOINs de la base de datos
     private String autores; // Puede tener varios autores, los unimos en un String
@@ -108,5 +115,29 @@ public class Libro {
 
     public void setEditorial(String editorial) {
         this.editorial = editorial;
+    }
+
+    public long getEditorialId() {
+        return editorialId;
+    }
+
+    public void setEditorialId(long editorialId) {
+        this.editorialId = editorialId;
+    }
+
+    public long getCategoriaId() {
+        return categoriaId;
+    }
+
+    public void setCategoriaId(long categoriaId) {
+        this.categoriaId = categoriaId;
+    }
+
+    public List<String> getAutoresIds() {
+        return autoresIds;
+    }
+
+    public void setAutoresIds(List<String> autoresIds) {
+        this.autoresIds = autoresIds;
     }
 }

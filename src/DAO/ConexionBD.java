@@ -6,16 +6,17 @@ import java.sql.SQLException;
 
 public class ConexionBD {
 
-    // --- DATOS DE TU CONEXIÓN NEON (POSTGRESQL) ---
-    // ¡OBTÉN ESTOS DATOS DE TU DASHBOARD DE NEON!
-    private static final String HOST = "ep-sweet-sun-acn09m5a-pooler.sa-east-1.aws.neon.tech";
-    private static final String PUERTO = "5432";
-    private static final String BASE_DE_DATOS = "SIBIBLI";
-    private static final String USUARIO = "neondb_owner";
-    private static final String CONTRASENA = "npg_g6fXtWcnL3zV";
+    // --- DATOS DE TU CONEXIÓN MySQL ---
+    // ¡REEMPLAZA ESTOS DATOS CON LOS DE TU SERVIDOR MYSQL!
+    private static final String HOST = "bef6ikoyhy17ojjj0hqk-mysql.services.clever-cloud.com"; // o la IP de tu servidor en la nube
+    private static final String PUERTO = "3306";
+    private static final String BASE_DE_DATOS = "bef6ikoyhy17ojjj0hqk";
+    private static final String USUARIO = "ui8tnouqmbqfdxoe"; // tu usuario de MySQL
+    private static final String CONTRASENA = "MGhaYmlzbPAvGyvHUYD8"; // tu contraseña de MySQL
 
-    // La URL para PostgreSQL es diferente y Neon requiere SSL.
-    private static final String URL = "jdbc:postgresql://" + HOST + ":" + PUERTO + "/" + BASE_DE_DATOS + "?sslmode=require";
+    // <-- CAMBIO: La URL para MySQL tiene un formato diferente.
+    // Opciones como 'useSSL=false' y 'serverTimezone' previenen errores comunes.
+    private static final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + BASE_DE_DATOS + "?useSSL=false&serverTimezone=UTC";
 
     private static Connection conexion = null;
 
@@ -25,17 +26,18 @@ public class ConexionBD {
         try {
             if (conexion == null || conexion.isClosed()) {
                 try {
-                    // ¡IMPORTANTE! El nombre del driver de PostgreSQL es diferente.
-                    Class.forName("org.postgresql.Driver");
+                    // <-- CAMBIO: El nombre del driver de MySQL.
+                    Class.forName("com.mysql.cj.jdbc.Driver");
 
-                    conexion = DriverManager.getConnection("jdbc:postgresql://sibibli-13617.j77.aws-us-east-1.cockroachlabs.cloud:26257/SIBIBLI?sslmode=verify-full&password=_KaHpoLnCkm9ZNdE9YmkRA&user=ariel", USUARIO, CONTRASENA);
-                    System.out.println("¡Conexión a (PostgreSQL) exitosa!");
+                    // <-- CAMBIO: Se usa la nueva URL y los datos de MySQL.
+                    conexion = DriverManager.getConnection(URL, USUARIO, CONTRASENA);
+                    System.out.println("¡Conexión a MySQL exitosa!");
 
                 } catch (ClassNotFoundException e) {
-                    System.err.println("Error: No se encontró el driver de PostgreSQL. ¿Añadiste el .jar al proyecto?");
+                    System.err.println("Error: No se encontró el driver de MySQL. ¿Añadiste el .jar al proyecto?");
                     e.printStackTrace();
                 } catch (SQLException e) {
-                    System.err.println("Error al conectar con la base de datos de Neon.");
+                    System.err.println("Error al conectar con la base de datos de MySQL.");
                     e.printStackTrace();
                 }
             }

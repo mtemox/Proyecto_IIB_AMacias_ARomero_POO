@@ -24,7 +24,8 @@ public class PrestamoDAO {
 
     public boolean registrarPrestamo(Prestamo prestamo) {
         Connection con = ConexionBD.getConexion();
-        String sqlInsertPrestamo = "INSERT INTO prestamos (libro_id, socio_id, usuario_sistema_id, fecha_prestamo, fecha_devolucion_estimada, estado_prestamo) VALUES (?, ?, ?, ?, ?, ?::estado_prestamo_tipo)";
+        // <-- CAMBIO: Se elimina el casting "::estado_prestamo_tipo".
+        String sqlInsertPrestamo = "INSERT INTO prestamos (libro_id, socio_id, usuario_sistema_id, fecha_prestamo, fecha_devolucion_estimada, estado_prestamo) VALUES (?, ?, ?, ?, ?, ?)";
         String sqlUpdateLibro = "UPDATE libros SET cantidad_disponible = cantidad_disponible - 1 WHERE id = ?";
 
         try {
@@ -90,7 +91,8 @@ public class PrestamoDAO {
     public List<Object[]> buscarPrestamosActivosPorCedula(String cedulaSocio) {
         List<Object[]> prestamosActivos = new ArrayList<>();
         // Consulta con JOINs para obtener información legible
-        String sql = "SELECT p.id, l.titulo, s.nombre || ' ' || s.apellido AS socio_nombre, " +
+        // <-- CAMBIO: Se usa CONCAT() en lugar de || para unir nombres.
+        String sql = "SELECT p.id, l.titulo, CONCAT(s.nombre, ' ', s.apellido) AS socio_nombre, " +
                 "p.fecha_prestamo, p.fecha_devolucion_estimada, p.estado_prestamo " +
                 "FROM prestamos p " +
                 "JOIN libros l ON p.libro_id = l.id " +

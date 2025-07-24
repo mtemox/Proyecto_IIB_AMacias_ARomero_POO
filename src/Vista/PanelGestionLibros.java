@@ -4,6 +4,8 @@ import DAO.LibroDAO; // Importar el DAO
 import Modelo.Libro; // Importar el modelo
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class PanelGestionLibros {
@@ -21,6 +23,14 @@ public class PanelGestionLibros {
 
         // Llamamos al metodo para cargar los datos en cuanto se crea el panel
         cargarLibros();
+
+        // Accion para el boton de btnAgregarNuevoLibro
+        btnAgregarNuevoLibro.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirFormularioLibro(null);
+            }
+        });
     }
 
     // Getter para que el FormPrincipal pueda mostrar este panel
@@ -33,7 +43,7 @@ public class PanelGestionLibros {
      * una tarjeta por cada uno, añadiéndola al panel.
      */
 
-    private void cargarLibros() {
+    public void cargarLibros() {
         LibroDAO libroDAO = new LibroDAO();
         List<Libro> listaDeLibros = libroDAO.obtenerTodosLosLibros();
 
@@ -42,13 +52,32 @@ public class PanelGestionLibros {
 
         // Recorremos la lista de libros y creamos una tarjeta para cada uno
         for (Libro libro : listaDeLibros) {
-            PanelLibroCard card = new PanelLibroCard(); // Creamos una nueva tarjeta
-            card.setData(libro); // Le pasamos los datos del libro
-            panelGridDeLibros.add(card.getPanelCard()); // Añadimos la tarjeta al panel de rejilla
+            // <-- CAMBIO: Le pasamos "this" (la instancia de PanelGestionLibros) a la tarjeta
+            PanelLibroCard card = new PanelLibroCard(this);
+            card.setData(libro);
+            panelGridDeLibros.add(card.getPanelCard());
         }
 
         // Revalidamos y repintamos el panel para que los cambios se muestren
         panelGridDeLibros.revalidate();
         panelGridDeLibros.repaint();
     }
+
+    /**
+     * Abre el formulario para agregar o editar un libro.
+     * @param libro El libro a editar, o null para crear uno nuevo.
+     */
+
+    public void abrirFormularioLibro(Libro libro) {
+        JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this.PanelGestionLibros);
+
+        // Siempre llamamos al mismo constructor.
+        // Le pasamos el libro si estamos editando, o 'null' si es uno nuevo.
+        // La lógica para saber si es "nuevo" o "editar" ahora está DENTRO de FormLibro.
+        FormLibro form = new FormLibro(framePadre, this, libro);
+        // ----------------------------------------------------
+
+        form.setVisible(true); // Esto muestra el diálogo
+    }
+
 }

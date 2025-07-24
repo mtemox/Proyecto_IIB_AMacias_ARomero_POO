@@ -20,7 +20,8 @@ public class SocioDAO {
         // Obtenemos la conexión a la base de datos
         Connection con = ConexionBD.getConexion();
         // Preparamos la consulta SQL para evitar inyección SQL
-        String sql = "INSERT INTO socios (cedula, nombre, apellido, email, telefono, fecha_registro, estado_socio) VALUES (?, ?, ?, ?, ?, ?, ?::estado_socio_tipo)";
+        // <-- CAMBIO: Se elimina el casting "::estado_socio_tipo".
+        String sql = "INSERT INTO socios (cedula, nombre, apellido, email, telefono, fecha_registro, estado_socio) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             // Establecemos los valores para los '?' de la consulta
@@ -115,7 +116,8 @@ public class SocioDAO {
      * @return true si se actualizó correctamente, false si hubo un error.
      */
     public boolean actualizarSocio(Socio socio) {
-        String sql = "UPDATE socios SET nombre = ?, apellido = ?, email = ?, telefono = ?, estado_socio = ?::estado_socio_tipo WHERE id = ?";
+        // <-- CAMBIO: Se elimina el casting "::estado_socio_tipo".
+        String sql = "UPDATE socios SET nombre = ?, apellido = ?, email = ?, telefono = ?, estado_socio = ? WHERE id = ?";
         Connection con = ConexionBD.getConexion();
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
