@@ -136,4 +136,32 @@ public class SocioDAO {
             return false;
         }
     }
+
+    /**
+     * Genera un reporte con los 10 socios que más préstamos han realizado.
+     * @return Una lista de arrays de objetos con [Nombre del Socio, Cantidad de Préstamos].
+     */
+    public List<Object[]> getReporteSociosMasActivos() {
+        List<Object[]> reporte = new ArrayList<>();
+        String sql = "SELECT CONCAT(s.nombre, ' ', s.apellido) AS socio, COUNT(p.id) AS total_prestamos " +
+                "FROM prestamos p " +
+                "JOIN socios s ON p.socio_id = s.id " +
+                "GROUP BY socio " +
+                "ORDER BY total_prestamos DESC " +
+                "LIMIT 10";
+        try (Connection con = ConexionBD.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                reporte.add(new Object[]{
+                        rs.getString("socio"),
+                        rs.getInt("total_prestamos")
+                });
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reporte;
+    }
+
 }

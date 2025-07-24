@@ -1,9 +1,12 @@
 package DAO;
 
 import Modelo.Penalizacion;
+
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -134,4 +137,39 @@ public class PenalizacionDAO {
             try { if (con != null) con.setAutoCommit(true); } catch (SQLException e) { e.printStackTrace(); }
         }
     }
+
+    /**
+     * Genera un reporte de ingresos por penalizaciones pagadas en un rango de fechas.
+     * @param fechaInicio La fecha de inicio del rango.
+     * @param fechaFin La fecha de fin del rango.
+     * @return Un array de objeto con [Total Ingresos, Cantidad de Multas Pagadas], o null si no hay datos.
+     */
+    public Object[] getReporteIngresosPorFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        Object[] reporte = null;
+        String sql = "SELECT SUM(monto) AS total_ingresos, COUNT(id) AS total_pagadas " +
+                "FROM penalizaciones " +
+                "WHERE estado_penalizacion = 'PAGADA' AND fecha_pago BETWEEN ? AND ?";
+        try (Connection con = ConexionBD.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setDate(1, java.sql.Date.valueOf(fechaInicio));
+            ps.setDate(2, java.sql.Date.valueOf(fechaFin));
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                // Incluso si no hay ingresos, la consulta devuelve una fila con valores NULL.
+                // Nos aseguramos de manejarlo.
+                BigDecimal totalIngresos = rs.getBigDecimal("total_ingresos");
+                if (totalIngresos == null) {
+                    totalIngresos = BigDecimal.ZERO;
+                }
+                reporte = new Object[]{
+                        totalIngresos,
+                        rs.getInt("total_pagadas")
+                };
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reporte;
+    }
+
 }

@@ -152,6 +152,15 @@ public class FormPrincipal extends JFrame {
                 mostrarPanel(panel.getPanel());
             }
         });
+
+        // Accion para el boton btnVerReportes
+        btnVerReportes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PanelReportes panelReportes = new PanelReportes();
+                mostrarPanel(panelReportes.getPanel());
+            }
+        });
     }
 
     // --- METODO ---

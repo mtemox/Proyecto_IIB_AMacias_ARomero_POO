@@ -282,4 +282,32 @@ public class LibroDAO {
         }
     }
 
+    /**
+     * Genera un reporte con los 10 libros más prestados.
+     * @return Una lista de arrays de objetos con [Título, Cantidad de Préstamos].
+     */
+
+    public List<Object[]> getReporteLibrosMasPrestados() {
+        List<Object[]> reporte = new ArrayList<>();
+        String sql = "SELECT l.titulo, COUNT(p.id) AS total_prestamos " +
+                "FROM prestamos p " +
+                "JOIN libros l ON p.libro_id = l.id " +
+                "GROUP BY l.titulo " +
+                "ORDER BY total_prestamos DESC " +
+                "LIMIT 10"; // Limitamos a los 10 primeros
+        try (Connection con = ConexionBD.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                reporte.add(new Object[]{
+                        rs.getString("titulo"),
+                        rs.getInt("total_prestamos")
+                });
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reporte;
+    }
+
 }
