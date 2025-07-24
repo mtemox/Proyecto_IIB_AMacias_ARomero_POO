@@ -90,18 +90,27 @@ public class PrestamoDAO {
      */
     public List<Object[]> buscarPrestamosActivosPorCedula(String cedulaSocio) {
         List<Object[]> prestamosActivos = new ArrayList<>();
-        // Consulta con JOINs para obtener información legible
-        // <-- CAMBIO: Se usa CONCAT() en lugar de || para unir nombres.
+        // Usamos CONCAT() para el nombre del socio
         String sql = "SELECT p.id, l.titulo, CONCAT(s.nombre, ' ', s.apellido) AS socio_nombre, " +
-                "p.fecha_prestamo, p.fecha_devolucion_estimada, p.estado_prestamo " +
+                "p.fecha_devolucion_estimada, p.estado_prestamo, s.cedula " + // <-- Añadimos la cédula
                 "FROM prestamos p " +
                 "JOIN libros l ON p.libro_id = l.id " +
                 "JOIN socios s ON p.socio_id = s.id " +
-                "WHERE s.cedula = ? AND (p.estado_prestamo = 'EN_CURSO' OR p.estado_prestamo = 'VENCIDO')";
+                "WHERE (p.estado_prestamo = 'EN_CURSO' OR p.estado_prestamo = 'VENCIDO') " +
+                "AND (? IS NULL OR s.cedula = ?) " + // <-- ESTE ES EL CAMBIO CLAVE
+                "ORDER BY p.fecha_devolucion_estimada ASC";
         Connection con = ConexionBD.getConexion();
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, cedulaSocio);
+            // Si el string de cédula está vacío, lo tratamos como nulo para que el WHERE lo ignore.
+            if (cedulaSocio == null || cedulaSocio.trim().isEmpty()) {
+                ps.setNull(1, java.sql.Types.VARCHAR);
+                ps.setNull(2, java.sql.Types.VARCHAR);
+            } else {
+                ps.setString(1, cedulaSocio.trim());
+                ps.setString(2, cedulaSocio.trim());
+            }
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 prestamosActivos.add(new Object[]{
@@ -109,7 +118,8 @@ public class PrestamoDAO {
                         rs.getString("titulo"),
                         rs.getString("socio_nombre"),
                         rs.getDate("fecha_devolucion_estimada").toLocalDate(),
-                        rs.getString("estado_prestamo")
+                        rs.getString("estado_prestamo"),
+                        rs.getString("cedula") // Añadimos la cédula a los datos de la fila
                 });
             }
         } catch (SQLException e) {

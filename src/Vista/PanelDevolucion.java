@@ -23,6 +23,7 @@ public class PanelDevolucion {
         prestamoDAO = new PrestamoDAO();
         inicializarTabla();
         configurarListeners();
+        cargarPrestamos();
     }
 
     public JPanel getPanel() {
@@ -41,6 +42,7 @@ public class PanelDevolucion {
         tableModel.addColumn("Socio");
         tableModel.addColumn("Fecha Devolución Estimada");
         tableModel.addColumn("Estado");
+        tableModel.addColumn("Cédula Socio");
         tblPrestamosActivos.setModel(tableModel);
         tblPrestamosActivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Solo se puede seleccionar una fila
     }
@@ -51,7 +53,7 @@ public class PanelDevolucion {
         btnBuscarPrestamos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                buscarPrestamos();
+                cargarPrestamos();
             }
         });
 
@@ -63,6 +65,22 @@ public class PanelDevolucion {
             }
         });
 
+    }
+
+    // Este metodo ahora sirve para cargar todos los préstamos o para filtrar por cédula
+    private void cargarPrestamos() {
+        String cedula = txtBusquedaCedula.getText().trim();
+
+        tableModel.setRowCount(0); // Limpiar la tabla
+        List<Object[]> prestamos = prestamoDAO.buscarPrestamosActivosPorCedula(cedula);
+
+        if (prestamos.isEmpty() && !cedula.isEmpty()) {
+            JOptionPane.showMessageDialog(PanelDevolucion, "No se encontraron préstamos activos para la cédula ingresada.", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            for (Object[] prestamo : prestamos) {
+                tableModel.addRow(prestamo);
+            }
+        }
     }
 
     private void buscarPrestamos() {

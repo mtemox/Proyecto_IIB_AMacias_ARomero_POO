@@ -20,6 +20,7 @@ public class FormPrincipal extends JFrame {
     private JButton btnCerrarSesion;
     private JPanel panelContenido;
     private JLabel lblLogo;
+    private JButton btnGestionPenalizaciones;
 
     java.net.URL imageUrl = getClass().getResource("/resources/logo.png");
 
@@ -139,6 +140,15 @@ public class FormPrincipal extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 PanelDevolucion panel = new PanelDevolucion();
+                mostrarPanel(panel.getPanel());
+            }
+        });
+
+        // Accion para el boton btnGestionPenalizaciones
+        btnGestionPenalizaciones.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PanelGestionPenalizaciones panel = new PanelGestionPenalizaciones();
                 mostrarPanel(panel.getPanel());
             }
         });
