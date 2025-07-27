@@ -6,17 +6,17 @@ import java.sql.SQLException;
 
 public class ConexionBD {
 
-    // --- DATOS DE TU CONEXIÓN MySQL ---
-    // ¡REEMPLAZA ESTOS DATOS CON LOS DE TU SERVIDOR MYSQL!
-    private static final String HOST = "bef6ikoyhy17ojjj0hqk-mysql.services.clever-cloud.com"; // o la IP de tu servidor en la nube
-    private static final String PUERTO = "3306";
-    private static final String BASE_DE_DATOS = "bef6ikoyhy17ojjj0hqk";
-    private static final String USUARIO = "ui8tnouqmbqfdxoe"; // tu usuario de MySQL
-    private static final String CONTRASENA = "MGhaYmlzbPAvGyvHUYD8"; // tu contraseña de MySQL
+    // --- DATOS DE TU CONEXIÓN SQL SERVER ---
+    // ¡REEMPLAZA ESTOS DATOS CON LOS DE TU SERVIDOR SQL SERVER!
+    private static final String HOST = "sibibli-server.database.windows.net"; // O la IP/nombre de tu servidor
+    private static final String PUERTO = "1433";
+    private static final String BASE_DE_DATOS = "SIBIBLI"; // El nombre de tu base de datos
+    private static final String USUARIO = "mtard"; // Tu usuario de SQL Server
+    private static final String CONTRASENA = "Mt4rd1234"; // Tu contraseña de SQL Server
 
-    // <-- CAMBIO: La URL para MySQL tiene un formato diferente.
-    // Opciones como 'useSSL=false' y 'serverTimezone' previenen errores comunes.
-    private static final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + BASE_DE_DATOS + "?useSSL=false&serverTimezone=UTC";
+    // <-- CAMBIO: La URL para SQL Server tiene un formato diferente.
+    // Opciones como 'encrypt=true' y 'trustServerCertificate=true' son comunes para evitar problemas de SSL.
+    private static final String URL = "jdbc:sqlserver://" + HOST + ":" + PUERTO + ";databaseName=" + BASE_DE_DATOS + ";encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
 
     private static Connection conexion = null;
 
@@ -26,18 +26,18 @@ public class ConexionBD {
         try {
             if (conexion == null || conexion.isClosed()) {
                 try {
-                    // <-- CAMBIO: El nombre del driver de MySQL.
-                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    // <-- CAMBIO: El nombre del driver de SQL Server.
+                    Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
-                    // <-- CAMBIO: Se usa la nueva URL y los datos de MySQL.
+                    // <-- CAMBIO: Se usa la nueva URL y los datos de SQL Server.
                     conexion = DriverManager.getConnection(URL, USUARIO, CONTRASENA);
-                    System.out.println("¡Conexión a MySQL exitosa!");
+                    System.out.println("¡Conexión a SQL Server exitosa!");
 
                 } catch (ClassNotFoundException e) {
-                    System.err.println("Error: No se encontró el driver de MySQL. ¿Añadiste el .jar al proyecto?");
+                    System.err.println("Error: No se encontró el driver de SQL Server. ¿Añadiste el .jar al proyecto?");
                     e.printStackTrace();
                 } catch (SQLException e) {
-                    System.err.println("Error al conectar con la base de datos de MySQL.");
+                    System.err.println("Error al conectar con la base de datos de SQL Server.");
                     e.printStackTrace();
                 }
             }

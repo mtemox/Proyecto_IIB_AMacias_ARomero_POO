@@ -90,15 +90,16 @@ public class PrestamoDAO {
      */
     public List<Object[]> buscarPrestamosActivosPorCedula(String cedulaSocio) {
         List<Object[]> prestamosActivos = new ArrayList<>();
-        // Usamos CONCAT() para el nombre del socio
-        String sql = "SELECT p.id, l.titulo, CONCAT(s.nombre, ' ', s.apellido) AS socio_nombre, " +
-                "p.fecha_devolucion_estimada, p.estado_prestamo, s.cedula " + // <-- Añadimos la cédula
+        // <-- CAMBIO: Se usa '+' en lugar de CONCAT().
+        String sql = "SELECT p.id, l.titulo, s.nombre + ' ' + s.apellido AS socio_nombre, " +
+                "p.fecha_devolucion_estimada, p.estado_prestamo, s.cedula " +
                 "FROM prestamos p " +
                 "JOIN libros l ON p.libro_id = l.id " +
                 "JOIN socios s ON p.socio_id = s.id " +
                 "WHERE (p.estado_prestamo = 'EN_CURSO' OR p.estado_prestamo = 'VENCIDO') " +
-                "AND (? IS NULL OR s.cedula = ?) " + // <-- ESTE ES EL CAMBIO CLAVE
+                "AND (? IS NULL OR s.cedula = ?) " +
                 "ORDER BY p.fecha_devolucion_estimada ASC";
+
         Connection con = ConexionBD.getConexion();
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {

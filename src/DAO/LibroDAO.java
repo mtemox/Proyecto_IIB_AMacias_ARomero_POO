@@ -21,10 +21,10 @@ public class LibroDAO {
 
         // Esta consulta usa JOINs para unir las tablas y STRING_AGG para juntar
         // los nombres de los autores si un libro tiene más de uno.
-        // <-- CAMBIO: Se usa GROUP_CONCAT en lugar de STRING_AGG y CONCAT() para unir cadenas.
+        // <-- CAMBIO: Se usa STRING_AGG en lugar de GROUP_CONCAT y '+' para concatenar.
         String sql = "SELECT " +
                 "    l.id, l.titulo, l.portada_url, l.cantidad_disponible, " +
-                "    GROUP_CONCAT(CONCAT(a.nombre, ' ', a.apellido) SEPARATOR ', ') AS autores, " +
+                "    STRING_AGG(a.nombre + ' ' + a.apellido, ', ') AS autores, " +
                 "    c.nombre AS categoria, " +
                 "    e.nombre AS editorial " +
                 "FROM libros l " +
@@ -32,7 +32,7 @@ public class LibroDAO {
                 "LEFT JOIN autores a ON la.autor_id = a.id " +
                 "LEFT JOIN categorias c ON l.categoria_id = c.id " +
                 "LEFT JOIN editoriales e ON l.editorial_id = e.id " +
-                "GROUP BY l.id, c.nombre, e.nombre " +
+                "GROUP BY l.id, l.titulo, l.portada_url, l.cantidad_disponible, c.nombre, e.nombre " +
                 "ORDER BY l.titulo";
 
         try (PreparedStatement ps = con.prepareStatement(sql);
@@ -68,15 +68,15 @@ public class LibroDAO {
     public Libro buscarPorIsbn(String isbn) {
         Libro libro = null;
         // La consulta es similar a la de obtener todos, para traer también el autor.
-        // <-- CAMBIO: Se usa GROUP_CONCAT y CONCAT().
+        // <-- CAMBIO: Se usa STRING_AGG y '+'.
         String sql = "SELECT " +
                 "    l.id, l.titulo, l.portada_url, l.cantidad_disponible, " +
-                "    GROUP_CONCAT(CONCAT(a.nombre, ' ', a.apellido) SEPARATOR ', ') AS autores " +
+                "    STRING_AGG(a.nombre + ' ' + a.apellido, ', ') AS autores " +
                 "FROM libros l " +
                 "LEFT JOIN libros_autores la ON l.id = la.libro_id " +
                 "LEFT JOIN autores a ON la.autor_id = a.id " +
                 "WHERE l.isbn = ? AND l.cantidad_disponible > 0 " +
-                "GROUP BY l.id";
+                "GROUP BY l.id, l.titulo, l.portada_url, l.cantidad_disponible";
 
         Connection con = ConexionBD.getConexion();
 
@@ -106,20 +106,22 @@ public class LibroDAO {
 
     public Libro obtenerDetallesLibro(long libroId) {
         Libro libro = null;
-        // <-- CAMBIO: La consulta ahora también pide los IDs de las tablas relacionadas
+        // <-- CAMBIO: Se usa STRING_AGG y se convierte a.id a NVARCHAR para la agregación.
         String sql = "SELECT " +
                 "  l.*, " +
                 "  c.id AS categoria_id, c.nombre AS categoria, c.descripcion AS descripcion_categoria, " +
                 "  e.id AS editorial_id, e.nombre AS editorial, " +
-                "  GROUP_CONCAT(a.id SEPARATOR ',') AS autores_ids, " +
-                "  GROUP_CONCAT(CONCAT(a.nombre, ' ', a.apellido) SEPARATOR ', ') AS autores " +
+                "  STRING_AGG(CAST(a.id AS NVARCHAR(MAX)), ',') AS autores_ids, " +
+                "  STRING_AGG(a.nombre + ' ' + a.apellido, ', ') AS autores " +
                 "FROM libros l " +
                 "LEFT JOIN libros_autores la ON l.id = la.libro_id " +
                 "LEFT JOIN autores a ON la.autor_id = a.id " +
                 "LEFT JOIN categorias c ON l.categoria_id = c.id " +
                 "LEFT JOIN editoriales e ON l.editorial_id = e.id " +
                 "WHERE l.id = ? " +
-                "GROUP BY l.id, c.id, e.id"; // Agrupamos por los IDs también
+                "GROUP BY l.id, l.isbn, l.titulo, l.anio_publicacion, l.portada_url, l.cantidad_total, " +
+                "l.cantidad_disponible, l.editorial_id, l.categoria_id, c.id, c.nombre, " +
+                "c.descripcion, e.id, e.nombre";
 
         Connection con = ConexionBD.getConexion();
 
@@ -289,12 +291,12 @@ public class LibroDAO {
 
     public List<Object[]> getReporteLibrosMasPrestados() {
         List<Object[]> reporte = new ArrayList<>();
-        String sql = "SELECT l.titulo, COUNT(p.id) AS total_prestamos " +
+        // <-- CAMBIO: Se usa TOP 10 en lugar de LIMIT 10.
+        String sql = "SELECT TOP 10 l.titulo, COUNT(p.id) AS total_prestamos " +
                 "FROM prestamos p " +
                 "JOIN libros l ON p.libro_id = l.id " +
                 "GROUP BY l.titulo " +
-                "ORDER BY total_prestamos DESC " +
-                "LIMIT 10"; // Limitamos a los 10 primeros
+                "ORDER BY total_prestamos DESC "; // Limitamos a los 10 primeros
         try (Connection con = ConexionBD.getConexion();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -318,10 +320,10 @@ public class LibroDAO {
      */
     public List<Libro> buscarLibros(String termino) {
         List<Libro> libros = new ArrayList<>();
-        // La consulta es la misma que obtenerTodosLosLibros pero con un WHERE adicional
+        // <-- CAMBIO: Se usa STRING_AGG y '+'.
         String sql = "SELECT " +
                 "  l.id, l.titulo, l.portada_url, l.cantidad_disponible, " +
-                "  GROUP_CONCAT(CONCAT(a.nombre, ' ', a.apellido) SEPARATOR ', ') AS autores, " +
+                "  STRING_AGG(a.nombre + ' ' + a.apellido, ', ') AS autores, " +
                 "  c.nombre AS categoria, " +
                 "  e.nombre AS editorial " +
                 "FROM libros l " +
@@ -329,8 +331,8 @@ public class LibroDAO {
                 "LEFT JOIN autores a ON la.autor_id = a.id " +
                 "LEFT JOIN categorias c ON l.categoria_id = c.id " +
                 "LEFT JOIN editoriales e ON l.editorial_id = e.id " +
-                "WHERE l.titulo LIKE ? OR a.nombre LIKE ? OR a.apellido LIKE ? OR l.isbn LIKE ? " + // <-- Cláusula de búsqueda
-                "GROUP BY l.id, c.nombre, e.nombre " +
+                "WHERE l.titulo LIKE ? OR a.nombre LIKE ? OR a.apellido LIKE ? OR l.isbn LIKE ? " +
+                "GROUP BY l.id, l.titulo, l.portada_url, l.cantidad_disponible, c.nombre, e.nombre " +
                 "ORDER BY l.titulo";
 
         Connection con = ConexionBD.getConexion();

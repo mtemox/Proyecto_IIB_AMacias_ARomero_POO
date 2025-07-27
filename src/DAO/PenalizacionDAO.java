@@ -47,16 +47,17 @@ public class PenalizacionDAO {
      */
     public List<Object[]> buscarPenalizaciones(String cedulaSocio, String estado) {
         List<Object[]> penalizaciones = new ArrayList<>();
-        // Consulta compleja con JOINs para obtener datos legibles
-        String sql = "SELECT pen.id, s.id as socio_id, s.cedula, CONCAT(s.nombre, ' ', s.apellido) AS socio, " +
+        // <-- CAMBIO: Se usa '+' en lugar de CONCAT.
+        String sql = "SELECT pen.id, s.id as socio_id, s.cedula, s.nombre + ' ' + s.apellido AS socio, " +
                 "pen.monto, pen.estado_penalizacion, pen.fecha_generacion, l.titulo " +
                 "FROM penalizaciones pen " +
                 "JOIN socios s ON pen.socio_id = s.id " +
                 "JOIN prestamos p ON pen.prestamo_id = p.id " +
                 "JOIN libros l ON p.libro_id = l.id " +
-                "WHERE (? IS NULL OR s.cedula = ?) " + // Filtro por cédula
-                "AND (? IS NULL OR pen.estado_penalizacion = ?) " + // Filtro por estado
+                "WHERE (? IS NULL OR s.cedula = ?) " +
+                "AND (? IS NULL OR pen.estado_penalizacion = ?) " +
                 "ORDER BY pen.fecha_generacion DESC";
+
         Connection con = ConexionBD.getConexion();
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -95,7 +96,8 @@ public class PenalizacionDAO {
      */
     public boolean pagarPenalizacion(long penalizacionId, long socioId) {
         Connection con = ConexionBD.getConexion();
-        String sqlUpdatePenalizacion = "UPDATE penalizaciones SET estado_penalizacion = 'PAGADA', fecha_pago = CURDATE() WHERE id = ?";
+        // <-- CAMBIO: Se usa CAST(GETDATE() AS DATE) en lugar de CURDATE().
+        String sqlUpdatePenalizacion = "UPDATE penalizaciones SET estado_penalizacion = 'PAGADA', fecha_pago = CAST(GETDATE() AS DATE) WHERE id = ?";
         String sqlCheckOtrasPenalizaciones = "SELECT COUNT(*) FROM penalizaciones WHERE socio_id = ? AND estado_penalizacion = 'PENDIENTE'";
         String sqlUpdateSocio = "UPDATE socios SET estado_socio = 'ACTIVO' WHERE id = ?";
 

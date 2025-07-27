@@ -91,8 +91,9 @@ public class UsuarioSistemaDAO {
             return true;
         } catch (SQLException e) {
             System.err.println("Error al registrar el usuario: " + e.getMessage());
-            // El código de error '23505' es para violaciones de unicidad (ej. username duplicado)
-            if (e.getSQLState().equals("23505")) {
+            // <-- CAMBIO: El código de error para violación de unicidad en SQL Server es 2627 o 2601.
+            // El SQLState '23000' es el estándar para violación de integridad.
+            if (e.getSQLState().equals("23000")) {
                 System.err.println("El nombre de usuario '" + usuario.getUsername() + "' ya existe.");
             }
             e.printStackTrace();

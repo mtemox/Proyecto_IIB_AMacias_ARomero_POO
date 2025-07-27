@@ -143,12 +143,12 @@ public class SocioDAO {
      */
     public List<Object[]> getReporteSociosMasActivos() {
         List<Object[]> reporte = new ArrayList<>();
-        String sql = "SELECT CONCAT(s.nombre, ' ', s.apellido) AS socio, COUNT(p.id) AS total_prestamos " +
+        // <-- CAMBIOS: Se usa TOP 10 en lugar de LIMIT 10, y '+' en vez de CONCAT.
+        String sql = "SELECT TOP 10 s.nombre + ' ' + s.apellido AS socio, COUNT(p.id) AS total_prestamos " +
                 "FROM prestamos p " +
                 "JOIN socios s ON p.socio_id = s.id " +
-                "GROUP BY socio " +
-                "ORDER BY total_prestamos DESC " +
-                "LIMIT 10";
+                "GROUP BY s.nombre, s.apellido " + // En SQL Server es mejor agrupar por las columnas originales
+                "ORDER BY total_prestamos DESC";
         try (Connection con = ConexionBD.getConexion();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
