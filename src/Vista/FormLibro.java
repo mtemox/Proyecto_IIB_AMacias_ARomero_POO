@@ -132,7 +132,7 @@ public class FormLibro extends JDialog {
 
         if (exito) {
             JOptionPane.showMessageDialog(this, "Libro guardado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            panelPadre.cargarLibros();
+            panelPadre.cargarLibrosAsync(null);
             dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Ocurrió un error al guardar el libro.", "Error de BD", JOptionPane.ERROR_MESSAGE);

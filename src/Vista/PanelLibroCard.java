@@ -69,6 +69,7 @@ public class PanelLibroCard extends JFrame {
         lblTituloLibro.setText("<html>" + libro.getTitulo() + "</html>"); // El <html> permite el salto de línea automático si el título es largo
         lblAutorLibro.setText(libro.getAutores());
 
+
         if (libro.getCantidadDisponible() > 0) {
             lblDisponibilidad.setText("Disponibles: " + libro.getCantidadDisponible());
             lblDisponibilidad.setForeground(new Color(0, 150, 0)); // Color verde
@@ -77,22 +78,45 @@ public class PanelLibroCard extends JFrame {
             lblDisponibilidad.setForeground(Color.RED);
         }
 
-        // --- Cargar la imagen desde la URL ---
-        // NOTA: En una aplicación real, esto debería hacerse en un hilo separado (con SwingWorker)
-        // para no congelar la interfaz si la descarga de la imagen tarda mucho.
-        // Cargar imagen (esto puede hacerse en un hilo aparte con SwingWorker para mejor rendimiento)
-        try {
-            URL url = new URL(libro.getPortadaUrl());
-            Image image = ImageIO.read(url);
-            // Redimensionar la imagen para que quepa en el JLabel
-            Image scaledImage = image.getScaledInstance(120, 180, Image.SCALE_SMOOTH);
-            lblPortada.setIcon(new ImageIcon(scaledImage));
-        } catch (Exception e) {
-            // Si hay un error (URL mala, sin internet), poner una imagen por defecto
-            System.err.println("Error al cargar portada: " + e.getMessage());
-            lblPortada.setIcon(null); // O poner un icono de "imagen no encontrada"
-            lblPortada.setText("Sin portada");
-        }
+        // --- MODIFICADO ---
+        // Cargar la imagen de forma asíncrona
+        lblPortada.setIcon(null);
+        lblPortada.setText("Cargando..."); // Mensaje mientras se descarga la imagen
+
+        SwingWorker<ImageIcon, Void> imageLoader = new SwingWorker<ImageIcon, Void>() {
+            @Override
+            protected ImageIcon doInBackground() throws Exception {
+                // Se ejecuta en un hilo de fondo
+                try {
+                    URL url = new URL(libro.getPortadaUrl());
+                    Image image = ImageIO.read(url);
+                    Image scaledImage = image.getScaledInstance(120, 180, Image.SCALE_SMOOTH);
+                    return new ImageIcon(scaledImage);
+                } catch (Exception e) {
+                    System.err.println("Error al cargar portada para '" + libro.getTitulo() + "': " + e.getMessage());
+                    return null; // Devuelve null si hay error
+                }
+            }
+
+            @Override
+            protected void done() {
+                // Se ejecuta en el hilo de la UI
+                try {
+                    ImageIcon icon = get();
+                    if (icon != null) {
+                        lblPortada.setIcon(icon);
+                        lblPortada.setText(""); // Limpiar texto
+                    } else {
+                        lblPortada.setText("Sin portada");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    lblPortada.setText("Error");
+                }
+            }
+        };
+
+        imageLoader.execute();
     }
 
     private void mostrarDetalles() {
@@ -167,7 +191,10 @@ public class PanelLibroCard extends JFrame {
             if (exito) {
                 JOptionPane.showMessageDialog(this.panelCard, "Libro eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 if (this.panelGestionPadre != null) {
-                    this.panelGestionPadre.cargarLibros(); // Refrescar la vista principal
+                    // --- CORRECCIÓN AQUÍ ---
+                    // Se llama al nuevo método asíncrono para recargar todos los libros.
+                    // Pasamos 'null' para que no aplique ningún filtro de búsqueda.
+                    this.panelGestionPadre.cargarLibrosAsync(null); // Refrescar la vista principal
                 }
             } else {
                 JOptionPane.showMessageDialog(this.panelCard, "No se pudo eliminar el libro.", "Error", JOptionPane.ERROR_MESSAGE);

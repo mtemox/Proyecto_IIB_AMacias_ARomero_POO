@@ -63,7 +63,7 @@
         </constraints>
         <properties>
           <font name="Montserrat" size="14" style="0"/>
-          <text value="Label"/>
+          <text value="Información del socio"/>
         </properties>
       </component>
       <component id="a6067" class="javax.swing.JLabel">
@@ -100,7 +100,7 @@
         </constraints>
         <properties>
           <font name="Montserrat" size="14" style="0"/>
-          <text value="Label"/>
+          <text value="Información del libro"/>
         </properties>
       </component>
       <component id="2c64c" class="javax.swing.JLabel">
@@ -118,7 +118,7 @@
         </constraints>
         <properties>
           <font name="Montserrat" size="14" style="0"/>
-          <text value="Label"/>
+          <text value="Fecha estimada"/>
         </properties>
       </component>
       <component id="1121e" class="javax.swing.JButton" binding="btnConfirmarPrestamo">

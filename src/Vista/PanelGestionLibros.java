@@ -25,8 +25,12 @@ public class PanelGestionLibros {
         this.libroDAO = new LibroDAO(); // Inicializamos el DAO
         panelGridDeLibros.setLayout(new GridLayout(0, 3, 15, 15));
 
+        // --- MODIFICADO ---
+        // Llamamos al nuevo metodo de carga asíncrona.
+        cargarLibrosAsync(null);
+
         // Llamamos al metodo para cargar los datos en cuanto se crea el panel
-        cargarLibros();
+        // cargarLibros();
 
         // Accion para el boton de btnAgregarNuevoLibro
         btnAgregarNuevoLibro.addActionListener(new ActionListener() {
@@ -56,24 +60,65 @@ public class PanelGestionLibros {
      * una tarjeta por cada uno, añadiéndola al panel.
      */
 
-    public void cargarLibros() {
-        LibroDAO libroDAO = new LibroDAO();
-        List<Libro> listaDeLibros = libroDAO.obtenerTodosLosLibros();
-
-        // Limpiamos el panel por si tenía algo antes
+    public void cargarLibrosAsync(String termino) {
+        // 1. Limpia el panel y muestra un mensaje de carga.
         panelGridDeLibros.removeAll();
-
-        // Recorremos la lista de libros y creamos una tarjeta para cada uno
-        for (Libro libro : listaDeLibros) {
-            // <-- CAMBIO: Le pasamos "this" (la instancia de PanelGestionLibros) a la tarjeta
-            PanelLibroCard card = new PanelLibroCard(this);
-            card.setData(libro);
-            panelGridDeLibros.add(card.getPanelCard());
-        }
-
-        // Revalidamos y repintamos el panel para que los cambios se muestren
+        panelGridDeLibros.setLayout(new BorderLayout()); // Layout para centrar el mensaje
+        JLabel lblCargando = new JLabel("Cargando libros, por favor espere...", SwingConstants.CENTER);
+        lblCargando.setFont(new Font("Arial", Font.ITALIC, 18));
+        panelGridDeLibros.add(lblCargando, BorderLayout.CENTER);
         panelGridDeLibros.revalidate();
         panelGridDeLibros.repaint();
+
+        // 2. Crea un SwingWorker para realizar la consulta a la BD en otro hilo.
+        SwingWorker<List<Libro>, Void> worker = new SwingWorker<List<Libro>, Void>() {
+            @Override
+            protected List<Libro> doInBackground() throws Exception {
+                // Esta parte se ejecuta en un hilo de fondo (NO TOCAR LA UI AQUÍ)
+                if (termino == null || termino.trim().isEmpty()) {
+                    return libroDAO.obtenerTodosLosLibros();
+                } else {
+                    return libroDAO.buscarLibros(termino);
+                }
+            }
+
+            @Override
+            protected void done() {
+                // Esta parte se ejecuta de vuelta en el hilo de la UI cuando 'doInBackground' termina.
+                try {
+                    List<Libro> listaDeLibros = get(); // Obtiene el resultado
+
+                    // 3. Limpia el panel y prepara el layout para las tarjetas.
+                    panelGridDeLibros.removeAll();
+                    panelGridDeLibros.setLayout(new GridLayout(0, 3, 15, 15));
+
+                    if (listaDeLibros.isEmpty()) {
+                        JLabel mensajeVacio = new JLabel("No se encontraron libros.", SwingConstants.CENTER);
+                        mensajeVacio.setFont(new Font("Arial", Font.BOLD, 16));
+                        panelGridDeLibros.setLayout(new BorderLayout());
+                        panelGridDeLibros.add(mensajeVacio, BorderLayout.CENTER);
+                    } else {
+                        // 4. Crea y añade las tarjetas de libros.
+                        for (Libro libro : listaDeLibros) {
+                            PanelLibroCard card = new PanelLibroCard(PanelGestionLibros.this);
+                            card.setData(libro); // 'setData' ahora también será asíncrono
+                            panelGridDeLibros.add(card.getPanelCard());
+                        }
+                    }
+
+                    // 5. Refresca la UI para mostrar las tarjetas.
+                    panelGridDeLibros.revalidate();
+                    panelGridDeLibros.repaint();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(panelGridDeLibros, "Error al cargar los libros.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        };
+
+        // 6. Inicia el worker.
+        worker.execute();
     }
 
     /**

@@ -3,6 +3,7 @@ package Vista;
 import Utils.SessionManager;
 import Modelo.UsuarioSistema;
 import Modelo.Libro;
+import Utils.ImageUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -21,8 +22,16 @@ public class FormPrincipal extends JFrame {
     private JPanel panelContenido;
     private JLabel lblLogo;
     private JButton btnGestionPenalizaciones;
+    private JLabel lblLogoLibros;
+    private JLabel lblLogoSocios;
+    private JLabel lblLogoPrestamos;
+    private JLabel lblLogoDevoluciones;
+    private JLabel lblLogoPenalizaciones;
+    private JLabel lblLogoUsuarios;
+    private JLabel lblLogoReportes;
+    private JLabel lblLogoSesion;
+    private JLabel titulo;
 
-    java.net.URL imageUrl = getClass().getResource("/resources/logo.png");
 
     // Metodo para mostrar los paneles
     private void mostrarPanel(JPanel panel) {
@@ -46,28 +55,22 @@ public class FormPrincipal extends JFrame {
     }
 
     public FormPrincipal() {
-        setTitle("SIBIBLI");
-        setContentPane(panelPrincipal);
+            setTitle("SIBIBLI");
+            setContentPane(panelPrincipal);
 
-        if (imageUrl != null) {
-            // 1. Crea el ImageIcon original
-            ImageIcon originalIcon = new ImageIcon(imageUrl);
-            // 2. Define el nuevo tamaño que deseas para la imagen
-            int nuevoAncho = 75; // Por ejemplo, 100 píxeles de ancho
-            int nuevoAlto = 75;  // Por ejemplo, 100 píxeles de alto
-            // 3. Obtiene la 'Image' del ImageIcon original y la escala
-            //    Image.SCALE_SMOOTH le da mayor calidad al redimensionamiento.
-            java.awt.Image imagenOriginal = originalIcon.getImage();
-            java.awt.Image imagenRedimensionada = imagenOriginal.getScaledInstance(nuevoAncho, nuevoAlto, java.awt.Image.SCALE_SMOOTH);
-            // 4. Crea un nuevo ImageIcon a partir de la imagen ya redimensionada
-            ImageIcon iconoRedimensionado = new ImageIcon(imagenRedimensionada);
-            // 5. Asigna el icono final (ya con el tamaño correcto) a tu JLabel
-            lblLogo.setIcon(iconoRedimensionado);
-        } else {
-            System.err.println("Error: No se encontró la imagen en la ruta especificada.");
-        }
+        ImageUtils.loadImage(lblLogo, "/resources/logo6.png", 200, 200);
 
-        setSize(1450, 720);
+        // Iconos para los botones de navegacion
+        ImageUtils.loadImage(lblLogoLibros, "/resources/libros.png", 30, 30);
+        ImageUtils.loadImage(lblLogoSocios, "/resources/socios.png", 30, 30);
+        ImageUtils.loadImage(lblLogoPrestamos, "/resources/prestamo.png", 30, 30);
+        ImageUtils.loadImage(lblLogoDevoluciones, "/resources/devolucion.png", 30, 30);
+        ImageUtils.loadImage(lblLogoPenalizaciones, "/resources/penalizacion.png", 30, 30);
+        ImageUtils.loadImage(lblLogoUsuarios, "/resources/usuario.png", 30, 30);
+        ImageUtils.loadImage(lblLogoReportes, "/resources/analitica.png", 30, 30);
+        ImageUtils.loadImage(lblLogoSesion, "/resources/acceso.png", 30, 30);
+
+        setSize(1550, 720);
         //setExtendedState(JFrame.MAXIMIZED_BOTH); // Para iniciar maximizado
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);

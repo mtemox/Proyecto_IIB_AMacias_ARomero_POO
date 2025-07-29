@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="PanelReportes" layout-manager="GridLayoutManager" row-count="7" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="30" left="30" bottom="30" right="30"/>
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="533" height="400"/>
     </constraints>
     <properties>
       <background color="-328966"/>
@@ -119,7 +119,7 @@
         </constraints>
         <properties>
           <font name="Montserrat" size="14" style="0"/>
-          <text value="Exportar a Excel"/>
+          <text value="Exportar a CSV"/>
         </properties>
       </component>
     </children>

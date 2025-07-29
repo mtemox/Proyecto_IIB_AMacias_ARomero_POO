@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import Utils.ReporteExporter; // Importa la nueva clase
+import javax.swing.table.TableModel;
 
 public class PanelReportes {
     private JPanel PanelReportes;
@@ -75,6 +77,14 @@ public class PanelReportes {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                TableModel model = tblReporte.getModel();
+                if (model.getRowCount() == 0) {
+                    JOptionPane.showMessageDialog(PanelReportes, "No hay datos en la tabla para exportar.", "Tabla Vacía", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                String titulo = (String) cmbTipoReporte.getSelectedItem();
+                ReporteExporter.exportarAPdf(tblReporte, "Reporte: " + titulo);
+
             }
         });
 
@@ -82,6 +92,14 @@ public class PanelReportes {
         btnExportarExcel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                TableModel model = tblReporte.getModel();
+                if (model.getRowCount() == 0) {
+                    JOptionPane.showMessageDialog(PanelReportes, "No hay datos en la tabla para exportar.", "Tabla Vacía", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                // Llama al nuevo método que no necesita librerías
+                ReporteExporter.exportarACSV(tblReporte);
 
             }
         });
