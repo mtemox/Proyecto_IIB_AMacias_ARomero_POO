@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConexionBD {
 
-    // --- DATOS DE TU CONEXIÓN SQL SERVER ---
+    // --- DATOS DE LA CONEXIÓN SQL SERVER ---
     private static final String HOST = "sibibli-server.database.windows.net"; // O la IP/nombre de tu servidor
     private static final String PUERTO = "1433";
     private static final String BASE_DE_DATOS = "SIBIBLI"; // El nombre de tu base de datos

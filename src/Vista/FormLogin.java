@@ -31,18 +31,7 @@ public class FormLogin extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
-
-
-
-        lblRegistrarse.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                new FormRegistro();
-                dispose();
-
-            }
-        });
+        
 
         btnIngresar.addActionListener(new ActionListener() {
             @Override
