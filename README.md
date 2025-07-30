@@ -1,3 +1,6 @@
+Ejecutable: https://1drv.ms/u/c/a75a3562f6e35a7b/EeMU4pISldNNuB6sd-1ZUiIBPz_16ix5Nh9G0drAKpycJw?e=xqOgI7
+(Nota: Para el ejecutable se necesitan unos archivos con el fin de mejorar la compatibilidad con diberentes versiones Java, por ende, es necesario instalar el .rar y dentro de este conseguir el .exe) 
+
 SIBIBLI - Sistema de Gestión de Biblioteca
   SIBIBLI es una aplicación de escritorio desarrollada en Java Swing, diseñada para administrar de manera eficiente las operaciones de una biblioteca. Permite gestionar el catálogo de libros, los socios, los préstamos, las devoluciones y las penalizaciones, además de ofrecer un sistema de control de acceso por roles y la generación de reportes.
 
