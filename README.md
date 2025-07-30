@@ -1,4 +1,4 @@
-Ejecutable: https://1drv.ms/u/c/a75a3562f6e35a7b/EeMU4pISldNNuB6sd-1ZUiIBPz_16ix5Nh9G0drAKpycJw?e=xqOgI7
+Ejecutable: https://1drv.ms/u/c/a75a3562f6e35a7b/Eem5ANLHykhLsOyNMyaMQn4BfET56VhUU9eG-K4tGklUDA?e=8I449z
 (Nota: Para el ejecutable se necesitan unos archivos con el fin de mejorar la compatibilidad con diberentes versiones Java, por ende, es necesario instalar el .rar y dentro de este conseguir el .exe) 
 
 SIBIBLI - Sistema de Gestión de Biblioteca
