@@ -3,7 +3,15 @@
     <output-path>$PROJECT_DIR$/out/artifacts/Proyecto_IIB_AMacias_ARomero_POO_jar</output-path>
     <root id="archive" name="Proyecto_IIB_AMacias_ARomero_POO.jar">
       <element id="module-output" name="Proyecto_IIB_AMacias_ARomero_POO" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../../Conector/mysql-connector-j-9.3.0/mysql-connector-j-9.3.0/mysql-connector-j-9.3.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Proyecto/commons-io-2.16.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Proyecto/poi-5.2.5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Proyecto/commons-compress-1.26.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Proyecto/log4j-api-2.23.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Proyecto/openpdf-1.3.30.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Proyecto/xmlbeans-5.2.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Proyecto/poi-ooxml-5.2.5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Proyecto/commons-collections4-4.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../mssql-jdbc-12.10.1.jre11.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
