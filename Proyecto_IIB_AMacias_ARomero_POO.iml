@@ -10,7 +10,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../Proyecto/commons-collections4-4.4.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/log4j-api-2.23.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -19,7 +19,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../Proyecto/commons-compress-1.26.1.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/commons-io-2.16.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -28,7 +28,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../Proyecto/commons-io-2.16.1.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/commons-collections4-4.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -37,7 +37,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../Proyecto/log4j-api-2.23.1.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/commons-compress-1.26.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -46,7 +46,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../Proyecto/openpdf-1.3.30.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/xmlbeans-5.2.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -55,7 +55,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../Proyecto/poi-5.2.5.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/poi-ooxml-5.2.5 (1).jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -64,7 +64,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../Proyecto/poi-ooxml-5.2.5.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/poi-5.2.5 (1).jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -73,7 +73,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../Proyecto/xmlbeans-5.2.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Drivers/PDF/openpdf-1.3.30.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -82,7 +82,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../mssql-jdbc-12.10.1.jre11.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Drivers/sqljdbc_12.10/enu/jars/mssql-jdbc-12.10.1.jre11.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
