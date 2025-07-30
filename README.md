@@ -53,3 +53,8 @@ SIBIBLI - Sistema de Gestión de Biblioteca
   
     Macias Ariel.
     Romero Ardanny.
+
+   * Documentacion del proyecto
+  
+    https://epnecuador-my.sharepoint.com/personal/ariel_macias_epn_edu_ec/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fariel_macias_epn_edu_ec%2FDocuments%2FProyecto_IIB_AMacias_ARomero_BdD&ga=1
+  
