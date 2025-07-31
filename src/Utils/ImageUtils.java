@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.Image;
 import java.net.URL;
 
+/**
+ * Un objeto que permite cargar imágenes a un objeto JLabel.
+ */
 public class ImageUtils {
 
     /**

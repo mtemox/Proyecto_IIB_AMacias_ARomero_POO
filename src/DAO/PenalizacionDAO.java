@@ -12,6 +12,10 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gestiona las operaciones de base de datos para las penalizaciones (multas).
+ * Se encarga de crear, leer y actualizar penalizaciones en la tabla `penalizaciones`.
+ */
 public class PenalizacionDAO {
 
     /**

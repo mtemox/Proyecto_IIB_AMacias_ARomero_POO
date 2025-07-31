@@ -8,6 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+/**
+ * Panel para la gestión integral de socios.
+ * Permite ver una lista de socios, así como agregar, editar y guardar sus datos.
+ */
 public class PanelGestionSocios {
     private JPanel PanelGestionSocios;
     private JTextField txtBusquedaSocio;
@@ -26,6 +30,9 @@ public class PanelGestionSocios {
     private SocioDAO socioDAO;
     private long idSocioSeleccionado = -1L; // Para saber qué socio estamos editando
 
+    /**
+     * Constructor del panel. Inicializa la tabla, los listeners y carga los socios.
+     */
     public PanelGestionSocios() {
 
         socioDAO = new SocioDAO();
@@ -43,11 +50,17 @@ public class PanelGestionSocios {
 
     }
 
-    // Getter para que el FormPrincipal pueda mostrar este panel
+    /**
+     * Devuelve el panel principal para ser mostrado.
+     * @return El JPanel de gestión de socios.
+     */
     public JPanel getPanel() {
         return PanelGestionSocios;
     }
 
+    /**
+     * Configura el modelo y las columnas de la tabla de socios.
+     */
     private void inicializarTabla() {
         tableModel = new DefaultTableModel() {
             @Override
@@ -65,6 +78,9 @@ public class PanelGestionSocios {
         tblSocios.setModel(tableModel);
     }
 
+    /**
+     * Carga todos los socios desde la base de datos y los muestra en la tabla.
+     */
     private void cargarSocios() {
         tableModel.setRowCount(0); // Limpiar tabla
         List<Socio> listaSocios = socioDAO.obtenerTodosLosSocios();
@@ -81,6 +97,9 @@ public class PanelGestionSocios {
         }
     }
 
+    /**
+     * Configura los listeners para los botones de nuevo, guardar y editar.
+     */
     private void configurarListeners() {
         // Listener para el botón "Nuevo"
         btnNuevoSocio.addActionListener(e -> {
@@ -106,6 +125,10 @@ public class PanelGestionSocios {
         });
     }
 
+    /**
+     * Muestra los datos del socio seleccionado en la tabla en los campos del formulario.
+     * @param fila El índice de la fila seleccionada en la tabla.
+     */
     private void mostrarDatosSocioEnFormulario(int fila) {
 
         Object valorId = tableModel.getValueAt(fila, 0);
@@ -122,6 +145,9 @@ public class PanelGestionSocios {
         cmbEstado.setSelectedItem(tableModel.getValueAt(fila, 6));
     }
 
+    /**
+     * Guarda los datos del formulario, ya sea creando un nuevo socio o actualizando uno existente.
+     */
     private void guardarSocio() {
         // Validaciones básicas
         if (txtNombre.getText().trim().isEmpty() || txtApellido.getText().trim().isEmpty() || txtCedula.getText().trim().isEmpty()) {
@@ -158,6 +184,10 @@ public class PanelGestionSocios {
         }
     }
 
+    /**
+     * Habilita o deshabilita los campos del formulario para edición.
+     * @param habilitar `true` para habilitar, `false` para deshabilitar.
+     */
     private void habilitarCampos(boolean habilitar) {
         txtCedula.setEditable(habilitar);
         txtNombre.setEditable(habilitar);
@@ -168,6 +198,9 @@ public class PanelGestionSocios {
         btnGuardarSocio.setEnabled(habilitar);
     }
 
+    /**
+     * Limpia todos los campos del formulario y resetea el ID seleccionado.
+     */
     private void limpiarCampos() {
         idSocioSeleccionado = -1;
         txtCedula.setText("");

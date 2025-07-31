@@ -9,6 +9,10 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Representa la ventana de inicio de sesión de la aplicación.
+ * Permite a los usuarios (administradores y bibliotecarios) acceder al sistema.
+ */
 public class FormLogin extends JFrame {
     private JButton btnIngresar;
     private JPanel panelLogin;
@@ -20,6 +24,10 @@ public class FormLogin extends JFrame {
     java.net.URL imageUrl = getClass().getResource("/resources/logo.png");
     java.net.URL imageUrl2 = getClass().getResource("/resources/logo4.jpg");
 
+    /**
+     * Constructor que inicializa la ventana de login, carga las imágenes
+     * y configura el listener para el botón de ingreso.
+     */
     public FormLogin() {
         setTitle("Iniciar Sesión");
         setContentPane(panelLogin);

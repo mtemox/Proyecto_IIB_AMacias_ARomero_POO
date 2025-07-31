@@ -8,6 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+/**
+ * Panel para la gestión de libros. Muestra los libros en formato de tarjetas
+ * y permite buscar, agregar, editar y eliminar libros.
+ */
 public class PanelGestionLibros {
     private JPanel PanelGestionLibros;
     private JTextField txtBusquedaLibro;
@@ -18,6 +22,10 @@ public class PanelGestionLibros {
     // Declaramos el DAO como una variable de la clase para no crearlo múltiples veces
     private LibroDAO libroDAO;
 
+    /**
+     * Constructor del panel. Inicializa el DAO y los componentes de la UI,
+     * y lanza la carga inicial de libros de forma asíncrona.
+     */
     public PanelGestionLibros() {
         // Establecemos un layout de tipo rejilla para organizar las tarjetas
         // GridLayout(filas, columnas, espacio_horizontal, espacio_vertical)
@@ -50,6 +58,10 @@ public class PanelGestionLibros {
         });
     }
 
+    /**
+     * Devuelve el panel principal para ser mostrado en la ventana principal.
+     * @return El JPanel de gestión de libros.
+     */
     // Getter para que el FormPrincipal pueda mostrar este panel
     public JPanel getPanel() {
         return PanelGestionLibros;
@@ -59,7 +71,6 @@ public class PanelGestionLibros {
      * Usa el LibroDAO para obtener los libros de la BD y crea
      * una tarjeta por cada uno, añadiéndola al panel.
      */
-
     public void cargarLibrosAsync(String termino) {
         // 1. Limpia el panel y muestra un mensaje de carga.
         panelGridDeLibros.removeAll();

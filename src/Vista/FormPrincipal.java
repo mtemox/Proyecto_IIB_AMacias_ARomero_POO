@@ -9,6 +9,10 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Ventana principal de la aplicación. Contiene el menú de navegación
+ * y un panel central donde se muestran los diferentes módulos de gestión.
+ */
 public class FormPrincipal extends JFrame {
     private JPanel panelPrincipal;
     private JPanel panelNavegacion;
@@ -33,7 +37,10 @@ public class FormPrincipal extends JFrame {
     private JLabel titulo;
 
 
-    // Metodo para mostrar los paneles
+    /**
+     * Cambia el panel visible en el área de contenido principal.
+     * @param panel El nuevo panel a mostrar.
+     */
     private void mostrarPanel(JPanel panel) {
         // Establece el tamaño y la posición del panel que se va a mostrar.
         // Esto asegura que ocupe todo el espacio del panel contenedor.
@@ -54,6 +61,11 @@ public class FormPrincipal extends JFrame {
         panelContenido.repaint();
     }
 
+    /**
+     * Constructor de la ventana principal.
+     * Inicializa los componentes, carga los iconos, configura los listeners
+     * y ajusta la visibilidad de los botones según el rol del usuario.
+     */
     public FormPrincipal() {
             setTitle("SIBIBLI");
             setContentPane(panelPrincipal);
@@ -166,7 +178,10 @@ public class FormPrincipal extends JFrame {
         });
     }
 
-    // --- METODO ---
+    /**
+     * Configura la visibilidad y habilitación de los botones del menú
+     * basándose en el rol del usuario logueado (obtenido del SessionManager).
+     */
     private void configurarSegunRol() {
         UsuarioSistema usuario = SessionManager.getInstance().getUsuarioLogueado();
         if (usuario != null) {
@@ -189,10 +204,10 @@ public class FormPrincipal extends JFrame {
     }
 
     /**
-     * Navega al panel de nuevo préstamo, precargando un libro.
+     * Navega al panel de nuevo préstamo, precargando un libro específico.
+     * Este metodo es útil para ser llamado desde otras partes de la UI, como la tarjeta de un libro.
      * @param libro El libro que se va a prestar.
      */
-
     public void navegarAPrestamosConLibro(Libro libro) {
         PanelNuevoPrestamo panel = new PanelNuevoPrestamo(libro);
         mostrarPanel(panel.getPanelNuevoPrestamo());

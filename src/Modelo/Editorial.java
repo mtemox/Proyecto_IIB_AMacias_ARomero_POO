@@ -2,6 +2,9 @@ package Modelo;
 
 import java.util.Objects;
 
+/**
+ * Representa una editorial de libros.
+ */
 public class Editorial {
     private long id;
     private String nombre;
@@ -21,12 +24,22 @@ public class Editorial {
         this.paisOrigen = paisOrigen;
     }
 
+    /**
+     * Devuelve el nombre de la editorial.
+     * Esencial para que JComboBox muestre el texto correcto.
+     * @return El nombre de la editorial.
+     */
     @Override
     public String toString() {
         return nombre; // CLAVE para JComboBox
     }
 
-    // Es crucial para que setSelectedItem() funcione correctamente
+    /**
+     * Compara dos objetos Editorial basándose en su ID.
+     * Crucial para que `setSelectedItem()` funcione correctamente.
+     * @param o El objeto a comparar.
+     * @return `true` si los IDs son iguales.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -35,6 +48,10 @@ public class Editorial {
         return id == editorial.id;
     }
 
+    /**
+     * Genera un código hash basado en el ID de la editorial.
+     * @return El código hash del objeto.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id);

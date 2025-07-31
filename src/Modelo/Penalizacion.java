@@ -3,6 +3,9 @@ package Modelo;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Representa una penalización o multa asociada a un préstamo vencido.
+ */
 public class Penalizacion {
     private long id;
     private long prestamoId;
@@ -13,8 +16,9 @@ public class Penalizacion {
     private String estadoPenalizacion;
     private String observaciones;
 
-    // --- CONSTRUCTORES, GETTERS Y SETTERS ---
-
+    /**
+     * Constructor por defecto.
+     */
     public Penalizacion() {}
 
     // Getters y Setters para todos los campos...

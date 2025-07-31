@@ -2,6 +2,9 @@ package Modelo;
 
 import java.time.LocalDate;
 
+/**
+ * Representa a un socio o cliente de la biblioteca.
+ */
 public class Socio {
     private long id;
     private String cedula;
@@ -14,8 +17,16 @@ public class Socio {
     // Agrega un campo para la contraseña, solo para el registro
     private String password;
 
-    // --- CONSTRUCTORES, GETTERS Y SETTERS ---
-    // Crea un constructor para el registro
+    /**
+     * Constructor para crear un nuevo socio, ideal para el formulario de registro.
+     * Establece la fecha de registro actual y el estado como 'ACTIVO'.
+     * @param cedula Cédula del socio.
+     * @param nombre Nombre del socio.
+     * @param apellido Apellido del socio.
+     * @param email Correo electrónico del socio.
+     * @param telefono Teléfono del socio.
+     * @param password Contraseña para el socio (en un sistema real, esto sería para un portal de socios).
+     */
     public Socio(String cedula, String nombre, String apellido, String email, String telefono, String password) {
         this.cedula = cedula;
         this.nombre = nombre;
@@ -27,7 +38,9 @@ public class Socio {
         this.estadoSocio = "ACTIVO";
     }
 
-    // Constructor vacio
+    /**
+     * Constructor vacío.
+     */
     public Socio() {}
 
     // Getter y setter de los atributos

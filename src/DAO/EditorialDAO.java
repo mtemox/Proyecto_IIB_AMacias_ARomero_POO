@@ -5,7 +5,16 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gestiona las operaciones de base de datos para la entidad Editorial.
+ * Se encarga de leer y escribir información de editoriales en la tabla `editoriales`.
+ */
 public class EditorialDAO {
+
+    /**
+     * Obtiene una lista de todas las editoriales de la base de datos.
+     * @return Una lista de objetos Editorial, ordenadas por nombre.
+     */
     public List<Editorial> obtenerTodas() {
         List<Editorial> editoriales = new ArrayList<>();
         String sql = "SELECT id, nombre FROM editoriales ORDER BY nombre";

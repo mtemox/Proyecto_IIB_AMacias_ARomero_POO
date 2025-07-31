@@ -10,6 +10,10 @@ import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Panel para la gestión de penalizaciones (multas).
+ * Permite buscar multas por cédula o estado, y marcarlas como pagadas.
+ */
 public class PanelGestionPenalizaciones {
     private JTextField txtBusquedaCedula;
     private JComboBox cmbFiltroEstado;
@@ -21,6 +25,9 @@ public class PanelGestionPenalizaciones {
     private DefaultTableModel tableModel;
     private PenalizacionDAO penalizacionDAO;
 
+    /**
+     * Constructor del panel. Inicializa componentes, DAO y carga los datos iniciales.
+     */
     public PanelGestionPenalizaciones() {
         penalizacionDAO = new PenalizacionDAO();
         inicializarTabla();
@@ -29,10 +36,17 @@ public class PanelGestionPenalizaciones {
         cargarPenalizaciones(); // Carga inicial
     }
 
+    /**
+     * Devuelve el panel principal para ser mostrado.
+     * @return El JPanel de gestión de penalizaciones.
+     */
     public JPanel getPanel() {
         return PanelGestionPenalizaciones;
     }
 
+    /**
+     * Configura el modelo de la tabla, sus columnas y oculta la columna de ID de socio.
+     */
     private void inicializarTabla() {
         tableModel = new DefaultTableModel() {
             @Override
@@ -55,6 +69,10 @@ public class PanelGestionPenalizaciones {
         ocultarColumna(1);
     }
 
+    /**
+     * Oculta una columna específica de la tabla.
+     * @param indiceColumna El índice de la columna a ocultar.
+     */
     private void ocultarColumna(int indiceColumna) {
         TableColumn columna = tblPenalizaciones.getColumnModel().getColumn(indiceColumna);
         columna.setMinWidth(0);
@@ -63,6 +81,9 @@ public class PanelGestionPenalizaciones {
         columna.setPreferredWidth(0);
     }
 
+    /**
+     * Rellena el ComboBox de filtro de estado con las opciones disponibles.
+     */
     private void configurarFiltros() {
         cmbFiltroEstado.addItem("TODOS");
         cmbFiltroEstado.addItem("PENDIENTE");
@@ -70,6 +91,9 @@ public class PanelGestionPenalizaciones {
         cmbFiltroEstado.setSelectedItem("PENDIENTE"); // Por defecto mostrar las pendientes
     }
 
+    /**
+     * Asigna los listeners a los botones de búsqueda y pago.
+     */
     private void configurarListeners() {
 
         // Accion para el botón btnBuscar
@@ -91,6 +115,9 @@ public class PanelGestionPenalizaciones {
 
     }
 
+    /**
+     * Carga las penalizaciones en la tabla según los filtros seleccionados.
+     */
     private void cargarPenalizaciones() {
         String cedula = txtBusquedaCedula.getText().trim();
         String estado = (String) cmbFiltroEstado.getSelectedItem();
@@ -103,6 +130,10 @@ public class PanelGestionPenalizaciones {
         }
     }
 
+    /**
+     * Marca la penalización seleccionada como pagada. Pide confirmación y, si es exitoso,
+     * actualiza el estado del socio si ya no tiene más multas pendientes.
+     */
     private void marcarComoPagada() {
         int filaSeleccionada = tblPenalizaciones.getSelectedRow();
         if (filaSeleccionada == -1) {

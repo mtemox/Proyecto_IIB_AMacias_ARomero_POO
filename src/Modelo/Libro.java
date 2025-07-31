@@ -2,6 +2,11 @@ package Modelo;
 
 import java.util.List;
 
+/**
+ * Representa un libro en el sistema de la biblioteca.
+ * Contiene todos los atributos de un libro, así como campos adicionales
+ * para almacenar información relacionada (como nombres de autores, etc.).
+ */
 public class Libro {
 
     private long id;
@@ -12,7 +17,6 @@ public class Libro {
     private int cantidadTotal;
     private int cantidadDisponible;
 
-    // --- NUEVOS CAMPOS ---
     private long editorialId;
     private long categoriaId;
     private java.util.List<String> autoresIds; // Para manejar los IDs en la edición

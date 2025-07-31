@@ -3,12 +3,20 @@ package Vista;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Un panel simple que muestra una imagen de bienvenida.
+ * Es el primer panel que se ve al iniciar sesión.
+ */
 public class PanelBienvenida extends JFrame {
     private JPanel PanelBienvenida;
     private JLabel lblLogo;
 
     java.net.URL imageUrl = getClass().getResource("/resources/logo5.jpg");
 
+    /**
+     * Devuelve el panel de bienvenida con la imagen ya cargada y redimensionada.
+     * @return El JPanel de bienvenida.
+     */
     public JPanel getPanelBienvenida() {
 
         if (imageUrl != null) {

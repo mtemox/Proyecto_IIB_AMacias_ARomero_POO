@@ -2,6 +2,10 @@ package Modelo;
 
 import java.time.LocalDate;
 
+/**
+ * Representa un préstamo de un libro a un socio.
+ * Contiene toda la información relevante sobre la transacción del préstamo.
+ */
 public class Prestamo {
 
     private int id;
@@ -13,6 +17,9 @@ public class Prestamo {
     private LocalDate fechaDevolucionReal;
     private String estadoPrestamo;
 
+    /**
+     * Constructor por defecto.
+     */
     public Prestamo() {
     }
 

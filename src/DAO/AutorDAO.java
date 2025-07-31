@@ -5,7 +5,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gestiona las operaciones de base de datos para la entidad Autor.
+ * Se encarga de leer y escribir información de autores en la tabla `autores`.
+ */
 public class AutorDAO {
+
+    /**
+     * Obtiene una lista de todos los autores desde la base de datos.
+     * Concatena el nombre y el apellido para facilitar su visualización.
+     * @return Una lista de objetos Autor con su ID y nombre completo.
+     */
     public List<Autor> obtenerTodos() {
         List<Autor> autores = new ArrayList<>();
         // <-- CAMBIO: Se usa el operador '+' en lugar de CONCAT para SQL Server.

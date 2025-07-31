@@ -4,12 +4,6 @@ import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableModel;
@@ -20,8 +14,18 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Clase de utilidad para exportar datos de una JTable a diferentes formatos de archivo.
+ * Proporciona métodos estáticos para exportar a PDF y CSV.
+ */
 public class ReporteExporter {
 
+    /**
+     * Exporta los datos de una JTable a un archivo PDF.
+     * Abre un diálogo para que el usuario elija dónde guardar el archivo.
+     * @param table La JTable que contiene los datos a exportar.
+     * @param tituloReporte El título que se mostrará en la cabecera del PDF.
+     */
     public static void exportarAPdf(JTable table, String tituloReporte) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Guardar reporte como PDF");
@@ -72,51 +76,7 @@ public class ReporteExporter {
         }
     }
 
-    public static void exportarAExcel(JTable table, String nombreHoja) {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Guardar reporte como Excel");
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos Excel (*.xlsx)", "xlsx"));
-
-        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-            File fileToSave = fileChooser.getSelectedFile();
-            if (!fileToSave.getAbsolutePath().endsWith(".xlsx")) {
-                fileToSave = new File(fileToSave.getAbsolutePath() + ".xlsx");
-            }
-
-            try (Workbook workbook = new XSSFWorkbook(); FileOutputStream fos = new FileOutputStream(fileToSave)) {
-                Sheet sheet = workbook.createSheet(nombreHoja);
-                TableModel model = table.getModel();
-
-                // Encabezados
-                Row headerRow = sheet.createRow(0);
-                for (int i = 0; i < model.getColumnCount(); i++) {
-                    Cell cell = headerRow.createCell(i);
-                    cell.setCellValue(model.getColumnName(i));
-                }
-
-                // Datos
-                for (int i = 0; i < model.getRowCount(); i++) {
-                    Row row = sheet.createRow(i + 1);
-                    for (int j = 0; j < model.getColumnCount(); j++) {
-                        Cell cell = row.createCell(j);
-                        Object value = model.getValueAt(i, j);
-                        if (value instanceof Number) {
-                            cell.setCellValue(((Number) value).doubleValue());
-                        } else {
-                            cell.setCellValue(value != null ? value.toString() : "");
-                        }
-                    }
-                }
-                workbook.write(fos);
-                JOptionPane.showMessageDialog(null, "Reporte Excel guardado exitosamente en:\n" + fileToSave.getAbsolutePath());
-            } catch (IOException e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Error al guardar el reporte Excel.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
-
-    // --- NUEVO MÉTODO PARA REEMPLAZAR EL DE EXCEL ---
+    // --- METODO PARA REEMPLAZAR EL DE EXCEL ---
     /**
      * Exporta los datos de una JTable a un archivo CSV.
      * Este método no requiere librerías externas.

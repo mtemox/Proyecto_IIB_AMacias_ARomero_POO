@@ -12,6 +12,10 @@ import java.util.List;
 import Utils.ReporteExporter; // Importa la nueva clase
 import javax.swing.table.TableModel;
 
+/**
+ * Panel para la generación y visualización de reportes.
+ * Permite generar diferentes tipos de reportes y exportarlos a PDF o CSV.
+ */
 public class PanelReportes {
     private JPanel PanelReportes;
     private JComboBox<String> cmbTipoReporte;
@@ -28,6 +32,9 @@ public class PanelReportes {
     private SocioDAO socioDAO;
     private PenalizacionDAO penalizacionDAO;
 
+    /**
+     * Constructor del panel. Inicializa los DAOs y configura los componentes.
+     */
     public PanelReportes() {
         // Inicializamos todos los DAOs que vamos a necesitar
         this.libroDAO = new LibroDAO();
@@ -38,10 +45,17 @@ public class PanelReportes {
         configurarListeners();
     }
 
+    /**
+     * Devuelve el panel principal para ser mostrado.
+     * @return El JPanel de reportes.
+     */
     public JPanel getPanel() {
         return PanelReportes;
     }
 
+    /**
+     * Configura los componentes iniciales del panel, como el ComboBox de reportes.
+     */
     private void configurarPanel() {
         // Llenar el ComboBox con los reportes disponibles
         cmbTipoReporte.addItem("Seleccione un reporte...");
@@ -53,6 +67,9 @@ public class PanelReportes {
         setVisibilidadFechas(false);
     }
 
+    /**
+     * Configura los listeners para los botones y el ComboBox.
+     */
     private void configurarListeners() {
         // Mostrar/ocultar campos de fecha según el reporte seleccionado
         cmbTipoReporte.addActionListener(e -> {
@@ -105,6 +122,9 @@ public class PanelReportes {
         });
     }
 
+    /**
+     * Llama al metodo de generación de reporte correspondiente según la selección del ComboBox.
+     */
     private void generarReporte() {
         String tipoReporte = (String) cmbTipoReporte.getSelectedItem();
 
@@ -124,18 +144,27 @@ public class PanelReportes {
         }
     }
 
+    /**
+     * Genera y muestra el reporte de los libros más prestados.
+     */
     private void generarReporteLibros() {
         String[] columnas = {"Título del Libro", "Cantidad de Préstamos"};
         List<Object[]> datos = libroDAO.getReporteLibrosMasPrestados();
         mostrarReporteEnTabla(columnas, datos);
     }
 
+    /**
+     * Genera y muestra el reporte de los socios más activos.
+     */
     private void generarReporteSocios() {
         String[] columnas = {"Nombre del Socio", "Cantidad de Préstamos"};
         List<Object[]> datos = socioDAO.getReporteSociosMasActivos();
         mostrarReporteEnTabla(columnas, datos);
     }
 
+    /**
+     * Genera y muestra el reporte de ingresos por penalizaciones en un rango de fechas.
+     */
     private void generarReporteIngresos() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try {
@@ -180,6 +209,10 @@ public class PanelReportes {
         }
     }
 
+    /**
+     * Muestra u oculta los campos de selección de fecha.
+     * @param visible `true` para mostrar, `false` para ocultar.
+     */
     private void setVisibilidadFechas(boolean visible) {
         lblFechaDesde.setVisible(visible);
         txtFechaDesde.setVisible(visible);

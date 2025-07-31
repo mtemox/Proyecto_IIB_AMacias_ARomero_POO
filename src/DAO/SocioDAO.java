@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gestiona las operaciones de base de datos para la entidad Socio.
+ * Se encarga de registrar, buscar, actualizar y obtener información de los socios.
+ */
 public class SocioDAO {
 
     /**
@@ -15,7 +19,6 @@ public class SocioDAO {
      * @param socio El objeto Socio con todos los datos.
      * @return true si se guardó correctamente, false si hubo un error.
      */
-
     public boolean registrarSocio(Socio socio) {
         // Obtenemos la conexión a la base de datos
         Connection con = ConexionBD.getConexion();
@@ -51,7 +54,6 @@ public class SocioDAO {
      * @param cedula La cédula del socio a buscar.
      * @return Un objeto Socio si se encuentra y está activo, de lo contrario null.
      */
-
     public Socio buscarPorCedula(String cedula) {
         Socio socio = null;
         String sql = "SELECT * FROM socios WHERE cedula = ? AND estado_socio = 'ACTIVO'";

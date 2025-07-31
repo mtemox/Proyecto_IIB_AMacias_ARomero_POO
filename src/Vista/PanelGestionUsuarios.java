@@ -9,6 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+/**
+ * Panel para la gestión de usuarios del sistema (empleados).
+ * Accesible solo para administradores, permite crear y modificar usuarios.
+ */
 public class PanelGestionUsuarios {
     private JPanel PanelGestionUsuarios;
     private JTable tblUsuarios;
@@ -24,6 +28,9 @@ public class PanelGestionUsuarios {
     private UsuarioSistemaDAO usuarioDAO;
     private long idUsuarioSeleccionado = -1;
 
+    /**
+     * Constructor del panel. Inicializa componentes, DAO y carga los usuarios.
+     */
     public PanelGestionUsuarios() {
         usuarioDAO = new UsuarioSistemaDAO();
         inicializarTabla();
@@ -34,10 +41,17 @@ public class PanelGestionUsuarios {
 
     }
 
+    /**
+     * Devuelve el panel principal para ser mostrado.
+     * @return El JPanel de gestión de usuarios.
+     */
     public JPanel getPanel() {
         return PanelGestionUsuarios;
     }
 
+    /**
+     * Configura el modelo y las columnas de la tabla de usuarios.
+     */
     private void inicializarTabla() {
         tableModel = new DefaultTableModel() {
             @Override
@@ -53,6 +67,9 @@ public class PanelGestionUsuarios {
         tblUsuarios.setModel(tableModel);
     }
 
+    /**
+     * Rellena los ComboBox de rol y estado con las opciones válidas.
+     */
     private void configurarComboBoxes() {
         // Roles definidos en la BD
         cmbRol.addItem("ADMINISTRADOR");
@@ -63,6 +80,9 @@ public class PanelGestionUsuarios {
         cmbEstado.addItem("INACTIVO");
     }
 
+    /**
+     * Carga todos los usuarios desde la base de datos y los muestra en la tabla.
+     */
     private void cargarUsuarios() {
         tableModel.setRowCount(0);
         List<UsuarioSistema> listaUsuarios = usuarioDAO.obtenerTodosLosUsuarios();
@@ -77,6 +97,9 @@ public class PanelGestionUsuarios {
         }
     }
 
+    /**
+     * Configura los listeners para los botones de nuevo, editar y guardar.
+     */
     private void configurarListeners() {
 
         // Accion para el boton btnNuevoUsuario
@@ -117,6 +140,10 @@ public class PanelGestionUsuarios {
 
     }
 
+    /**
+     * Muestra los datos del usuario seleccionado en la tabla en los campos del formulario.
+     * @param fila El índice de la fila seleccionada.
+     */
     private void mostrarDatosUsuarioEnFormulario(int fila) {
         idUsuarioSeleccionado = (long) tableModel.getValueAt(fila, 0);
         txtUsername.setText((String) tableModel.getValueAt(fila, 1));
@@ -127,6 +154,9 @@ public class PanelGestionUsuarios {
         //txtPassword.setToolTipText("Dejar en blanco para no cambiar la contraseña");
     }
 
+    /**
+     * Guarda los datos del formulario, ya sea creando un nuevo usuario o actualizando uno existente.
+     */
     private void guardarUsuario() {
         if (txtUsername.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(PanelGestionUsuarios, "El campo Username es obligatorio.", "Campo Vacío", JOptionPane.WARNING_MESSAGE);
@@ -167,6 +197,10 @@ public class PanelGestionUsuarios {
         }
     }
 
+    /**
+     * Habilita o deshabilita los campos del formulario para edición.
+     * @param habilitar `true` para habilitar, `false` para deshabilitar.
+     */
     private void habilitarCampos(boolean habilitar) {
         txtUsername.setEditable(habilitar);
         txtPassword.setEditable(habilitar);
@@ -175,6 +209,9 @@ public class PanelGestionUsuarios {
         btnGuardarUsuario.setEnabled(habilitar);
     }
 
+    /**
+     * Limpia todos los campos del formulario y resetea el ID seleccionado.
+     */
     private void limpiarCampos() {
         idUsuarioSeleccionado = -1;
         txtUsername.setText("");

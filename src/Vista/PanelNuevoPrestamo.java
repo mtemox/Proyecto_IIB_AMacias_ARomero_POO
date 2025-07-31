@@ -13,6 +13,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
+/**
+ * Panel para el registro de un nuevo préstamo.
+ * Permite buscar un socio por cédula y un libro por ISBN para crear el préstamo.
+ */
 public class PanelNuevoPrestamo extends JFrame{
     private JPanel PanelNuevoPrestamo;
     private JTextField txtBusquedaCedulaSocio;
@@ -28,11 +32,17 @@ public class PanelNuevoPrestamo extends JFrame{
     private Socio socioSeleccionado = null;
     private Libro libroSeleccionado = null;
 
+    /**
+     * Devuelve el panel principal para ser mostrado.
+     * @return El JPanel para registrar un nuevo préstamo.
+     */
     public JPanel getPanelNuevoPrestamo() {
         return PanelNuevoPrestamo;
     }
 
-    // Constructor vacío
+    /**
+     * Constructor por defecto. Inicializa los listeners y la fecha de devolución.
+     */
     public PanelNuevoPrestamo() {
 
         // Establecer la fecha de devolución estimada (ej. 15 días desde hoy)
@@ -66,6 +76,9 @@ public class PanelNuevoPrestamo extends JFrame{
 
     }
 
+    /**
+     * Busca un socio por la cédula ingresada y actualiza la UI con su información.
+     */
     private void buscarSocio() {
         String cedula = txtBusquedaCedulaSocio.getText().trim();
         if (cedula.isEmpty()) {
@@ -85,6 +98,9 @@ public class PanelNuevoPrestamo extends JFrame{
         validarEstadoPrestamo();
     }
 
+    /**
+     * Busca un libro por el ISBN ingresado y actualiza la UI con su información.
+     */
     private void buscarLibro() {
         String isbn = txtBusquedaIsbnLibro.getText().trim();
         if (isbn.isEmpty()) {
@@ -104,6 +120,9 @@ public class PanelNuevoPrestamo extends JFrame{
         validarEstadoPrestamo();
     }
 
+    /**
+     * Habilita el botón de confirmar préstamo solo si se ha encontrado un socio y un libro válidos.
+     */
     private void validarEstadoPrestamo() {
         // Habilita el botón de confirmar solo si se ha seleccionado un socio Y un libro válidos
         if (socioSeleccionado != null && libroSeleccionado != null) {
@@ -113,6 +132,9 @@ public class PanelNuevoPrestamo extends JFrame{
         }
     }
 
+    /**
+     * Confirma y registra el préstamo en la base de datos con los datos seleccionados.
+     */
     private void confirmarPrestamo() {
         // Crear el objeto Prestamo
         Prestamo nuevoPrestamo = new Prestamo();
@@ -142,6 +164,9 @@ public class PanelNuevoPrestamo extends JFrame{
         }
     }
 
+    /**
+     * Limpia todos los campos del formulario para preparar un nuevo registro de préstamo.
+     */
     private void limpiarFormulario() {
         txtBusquedaCedulaSocio.setText("");
         txtBusquedaIsbnLibro.setText("");
@@ -161,7 +186,6 @@ public class PanelNuevoPrestamo extends JFrame{
      * Constructor para iniciar el panel con un libro ya seleccionado.
      * @param libro El libro a prestar.
      */
-
     public PanelNuevoPrestamo(Libro libro) {
         this(); // Llama al constructor por defecto para inicializar todo
         this.libroSeleccionado = libro;

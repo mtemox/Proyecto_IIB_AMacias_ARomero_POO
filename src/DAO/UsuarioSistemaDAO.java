@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gestiona las operaciones de base de datos para los usuarios del sistema (empleados).
+ * Se encarga del login, registro y gestión de usuarios.
+ */
 public class UsuarioSistemaDAO {
 
     /**
@@ -44,7 +48,6 @@ public class UsuarioSistemaDAO {
      * Obtiene una lista de todos los usuarios del sistema.
      * @return Una lista de objetos UsuarioSistema.
      */
-
     public List<UsuarioSistema> obtenerTodosLosUsuarios() {
         List<UsuarioSistema> usuarios = new ArrayList<>();
         String sql = "SELECT * FROM usuarios_sistema ORDER BY username";
@@ -74,7 +77,6 @@ public class UsuarioSistemaDAO {
      * @param usuario El objeto UsuarioSistema con los datos a registrar.
      * @return true si se guardó correctamente, false si hubo un error.
      */
-
     public boolean registrarUsuario(UsuarioSistema usuario) {
         // <-- CAMBIO: Se eliminan los castings "::rol_usuario" y "::estado_general".
         String sql = "INSERT INTO usuarios_sistema (username, password, rol, estado) VALUES (?, ?, ?, ?)";
@@ -106,7 +108,6 @@ public class UsuarioSistemaDAO {
      * @param usuario El objeto UsuarioSistema con los datos actualizados.
      * @return true si se actualizó correctamente, false si hubo un error.
      */
-
     public boolean actualizarUsuario(UsuarioSistema usuario) {
         // La contraseña se actualiza solo si se proporciona una nueva.
         // <-- CAMBIO: Se eliminan los castings y se simplifica la consulta.

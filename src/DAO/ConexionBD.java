@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Gestiona la conexión a la base de datos SQL Server.
+ * Utiliza el patrón Singleton para asegurar una única instancia de la conexión.
+ */
 public class ConexionBD {
 
     // --- DATOS DE LA CONEXIÓN SQL SERVER ---
@@ -18,8 +22,16 @@ public class ConexionBD {
 
     private static Connection conexion = null;
 
+    /**
+     * Constructor privado para prevenir la instanciación directa.
+     */
     private ConexionBD() { }
 
+    /**
+     * Obtiene la instancia única de la conexión a la base de datos.
+     * Si la conexión no existe o está cerrada, la crea.
+     * @return La conexión activa a la base de datos.
+     */
     public static Connection getConexion() {
         try {
             if (conexion == null || conexion.isClosed()) {
@@ -46,6 +58,9 @@ public class ConexionBD {
         return conexion;
     }
 
+    /**
+     * Cierra la conexión a la base de datos si está abierta.
+     */
     public static void cerrarConexion() {
         try {
             if (conexion != null && !conexion.isClosed()) {

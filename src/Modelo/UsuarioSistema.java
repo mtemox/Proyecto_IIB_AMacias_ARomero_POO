@@ -1,5 +1,9 @@
 package Modelo;
 
+/**
+ * Representa un usuario del sistema (empleado), que puede ser
+ * un 'ADMINISTRADOR' o un 'BIBLIOTECARIO'.
+ */
 public class UsuarioSistema {
     private long id;
     private String username;
@@ -7,8 +11,18 @@ public class UsuarioSistema {
     private String rol;
     private String estado;
 
+    /**
+     * Constructor por defecto.
+     */
     public UsuarioSistema() {}
 
+    /**
+     * Constructor para crear un nuevo usuario con todos sus datos.
+     * @param username Nombre de usuario único.
+     * @param password Contraseña del usuario.
+     * @param rol Rol del usuario ('ADMINISTRADOR' o 'BIBLIOTECARIO').
+     * @param estado Estado del usuario ('ACTIVO' o 'INACTIVO').
+     */
     public UsuarioSistema(String username, String password, String rol, String estado) {
         this.username = username;
         this.password = password;

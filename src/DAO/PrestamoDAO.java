@@ -13,6 +13,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * Gestiona las operaciones de base de datos para los préstamos de libros.
+ * Incluye el registro de nuevos préstamos y devoluciones, manejando transacciones complejas.
+ */
 public class PrestamoDAO {
 
     /**
@@ -21,7 +25,6 @@ public class PrestamoDAO {
      * @param prestamo El objeto Prestamo con los datos a registrar.
      * @return true si la operación fue exitosa, false si falló.
      */
-
     public boolean registrarPrestamo(Prestamo prestamo) {
         Connection con = ConexionBD.getConexion();
         // <-- CAMBIO: Se elimina el casting "::estado_prestamo_tipo".
@@ -136,7 +139,6 @@ public class PrestamoDAO {
      * @param prestamoId El ID del préstamo a devolver.
      * @return true si la operación fue exitosa, false en caso de error.
      */
-
     public boolean registrarDevolucion(long prestamoId) {
         Connection con = ConexionBD.getConexion();
         String sqlInfoPrestamo = "SELECT libro_id, socio_id, fecha_devolucion_estimada FROM prestamos WHERE id = ?";

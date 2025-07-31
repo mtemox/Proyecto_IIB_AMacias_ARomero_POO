@@ -5,7 +5,16 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gestiona las operaciones de base de datos para la entidad Categoria.
+ * Se encarga de leer y escribir información de categorías en la tabla `categorias`.
+ */
 public class CategoriaDAO {
+
+    /**
+     * Obtiene una lista de todas las categorías de la base de datos.
+     * @return Una lista de objetos Categoria, ordenadas por nombre.
+     */
     public List<Categoria> obtenerTodas() {
         List<Categoria> categorias = new ArrayList<>();
         String sql = "SELECT id, nombre FROM categorias ORDER BY nombre";

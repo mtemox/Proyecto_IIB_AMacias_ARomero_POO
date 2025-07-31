@@ -9,6 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
+/**
+ * Representa una "tarjeta" individual para mostrar la información resumida de un libro.
+ * Incluye la portada, título, autor, disponibilidad y botones de acción.
+ */
 public class PanelLibroCard extends JFrame {
     private JPanel panelCard;
     private JLabel lblPortada;
@@ -24,6 +28,11 @@ public class PanelLibroCard extends JFrame {
     // Campo para guardar la referencia al panel que nos creó
     private final PanelGestionLibros panelGestionPadre;
 
+    /**
+     * Constructor de la tarjeta de libro.
+     * @param panelPadre Referencia al panel de gestión que contiene esta tarjeta,
+     * necesaria para refrescar la vista después de una acción.
+     */
     public PanelLibroCard(PanelGestionLibros panelPadre) {
         this.panelGestionPadre = panelPadre; // Guardamos la referencia
         this.libroDAO = new LibroDAO();
@@ -53,6 +62,10 @@ public class PanelLibroCard extends JFrame {
         });
     }
 
+    /**
+     * Devuelve el panel de la tarjeta para ser añadido a un contenedor.
+     * @return El JPanel que conforma la tarjeta.
+     */
     // Getter para que el panel principal pueda añadir esta tarjeta
     public JPanel getPanelCard() {
         return panelCard;
@@ -62,7 +75,6 @@ public class PanelLibroCard extends JFrame {
      * Rellena la tarjeta con los datos de un libro específico.
      * @param libro El objeto Libro con los datos a mostrar.
      */
-
     public void setData(Libro libro) {
         this.libro = libro;
 
@@ -119,6 +131,10 @@ public class PanelLibroCard extends JFrame {
         imageLoader.execute();
     }
 
+    /**
+     * Muestra un cuadro de diálogo con los detalles completos del libro.
+     * Ofrece la opción de prestar el libro si hay ejemplares disponibles.
+     */
     private void mostrarDetalles() {
         // Obtenemos los detalles completos desde la BD (esto no cambia)
         Libro libroDetallado = libroDAO.obtenerDetallesLibro(this.libro.getId());
@@ -169,14 +185,19 @@ public class PanelLibroCard extends JFrame {
         }
     }
 
-    // Metodo
+    /**
+     * Llama al panel de gestión padre para abrir el formulario de edición para este libro.
+     */
     private void editarLibro() {
         if (this.panelGestionPadre != null) {
             this.panelGestionPadre.abrirFormularioLibro(this.libro);
         }
     }
 
-    // Metodo
+    /**
+     * Pide confirmación y, si se acepta, elimina el libro de la base de datos.
+     * Luego, solicita al panel padre que refresque la lista de libros.
+     */
     private void eliminarLibro() {
         int confirmacion = JOptionPane.showConfirmDialog(
                 this.panelCard,

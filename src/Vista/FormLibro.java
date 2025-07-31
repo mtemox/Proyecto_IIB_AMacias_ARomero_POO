@@ -12,6 +12,11 @@ import java.util.List;
 import java.util.Vector;
 import java.util.stream.Collectors;
 
+/**
+ * Formulario de diálogo para agregar un nuevo libro o editar uno existente.
+ * Contiene campos para todos los datos del libro y permite la creación "al vuelo"
+ * de nuevos autores, editoriales y categorías.
+ */
 public class FormLibro extends JDialog {
     private JPanel contentPane;
     private JTextField txtTitulo;
@@ -42,7 +47,12 @@ public class FormLibro extends JDialog {
     private Libro libroParaEditar; // Null si es un libro nuevo
     private PanelGestionLibros panelPadre; // Para poder refrescar la lista de libros
 
-    // Constructor para un libro nuevo
+    /**
+     * Constructor del formulario.
+     * @param parent El frame padre sobre el que se mostrará el diálogo.
+     * @param panelPadre El panel de gestión de libros que invocó este formulario, para poder refrescarlo.
+     * @param libro El libro a editar. Si es `null`, el formulario se abre en modo "nuevo libro".
+     */
     public FormLibro(JFrame parent, PanelGestionLibros panelPadre, Libro libro) {
         super(parent, true);
         this.panelPadre = panelPadre;
@@ -60,8 +70,9 @@ public class FormLibro extends JDialog {
         }
     }
 
-
-
+    /**
+     * Configura las propiedades iniciales de la ventana (título, tamaño, listeners).
+     */
     private void configurarVentana() {
         setContentPane(contentPane);
         setTitle("Gestión de Libro");
@@ -114,6 +125,10 @@ public class FormLibro extends JDialog {
         });
     }
 
+    /**
+     * Carga los datos de autores, categorías y editoriales desde la BD
+     * para rellenar los JComboBox y el JList.
+     */
     private void cargarDatosParaCombosYLista() {
         // Cargar Categorías
         List<Categoria> categorias = new CategoriaDAO().obtenerTodas();
@@ -128,6 +143,10 @@ public class FormLibro extends JDialog {
         listAutores.setListData(new Vector<>(autores));
     }
 
+    /**
+     * Si se está editando un libro, este metodo rellena todos los campos del formulario
+     * con los datos del libro existente.
+     */
     private void llenarFormulario() {
         txtTitulo.setText(libroParaEditar.getTitulo());
         txtIsbn.setText(libroParaEditar.getIsbn());
@@ -149,6 +168,10 @@ public class FormLibro extends JDialog {
         }
     }
 
+    /**
+     * Valida los datos del formulario y los guarda en la base de datos.
+     * Llama al metodo de registro o actualización del DAO según corresponda.
+     */
     private void guardarLibro() {
         if (txtTitulo.getText().trim().isEmpty() || txtIsbn.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "El título y el ISBN son obligatorios.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
@@ -191,7 +214,12 @@ public class FormLibro extends JDialog {
         }
     }
 
-    // --- MÉTODOS DE AYUDA PARA SELECCIONAR ITEMS ---
+    /**
+     * Metodo genérico para seleccionar un ítem en un JComboBox basándose en su ID.
+     * @param comboBox El JComboBox en el que se buscará.
+     * @param idBuscado El ID del objeto (Categoría o Editorial) a seleccionar.
+     * @param <T> El tipo de objeto en el ComboBox (Categoria o Editorial).
+     */
     private <T> void seleccionarItemEnComboBox(JComboBox<T> comboBox, long idBuscado) {
         for (int i = 0; i < comboBox.getItemCount(); i++) {
             T item = comboBox.getItemAt(i);
@@ -206,6 +234,11 @@ public class FormLibro extends JDialog {
         }
     }
 
+    /**
+     * Selecciona múltiples autores en el JList basándose en una lista de IDs.
+     * @param lista El JList de autores.
+     * @param idsBuscados La lista de IDs de los autores a seleccionar.
+     */
     private void seleccionarItemsEnLista(JList<Autor> lista, List<Long> idsBuscados) {
         List<Integer> indicesParaSeleccionar = new ArrayList<>();
         ListModel<Autor> model = lista.getModel();
@@ -218,8 +251,10 @@ public class FormLibro extends JDialog {
         lista.setSelectedIndices(indices);
     }
 
-
-    // LÓGICA PARA LOS NUEVOS BOTONES
+    /**
+     * Abre un diálogo para agregar un nuevo autor. Si se guarda,
+     * refresca la lista de autores y selecciona el recién creado.
+     */
     private void agregarNuevoAutor() {
         JTextField nombreField = new JTextField(20);
         JTextField apellidoField = new JTextField(20);
@@ -276,6 +311,10 @@ public class FormLibro extends JDialog {
         }
     }
 
+    /**
+     * Abre un diálogo para agregar una nueva editorial. Si se guarda,
+     * refresca el ComboBox de editoriales y selecciona la recién creada.
+     */
     private void agregarNuevaEditorial() {
         JTextField nombreField = new JTextField(20);
         JTextField paisField = new JTextField(20);
@@ -314,6 +353,10 @@ public class FormLibro extends JDialog {
         }
     }
 
+    /**
+     * Abre un diálogo para agregar una nueva categoría. Si se guarda,
+     * refresca el ComboBox de categorías y selecciona la recién creada.
+     */
     private void agregarNuevaCategoria() {
         JTextField nombreField = new JTextField(20);
         JTextArea descripcionArea = new JTextArea(3, 20); // Área de texto para descripciones más largas

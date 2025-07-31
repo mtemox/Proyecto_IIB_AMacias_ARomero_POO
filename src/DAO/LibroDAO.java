@@ -7,6 +7,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Gestiona todas las operaciones de base de datos relacionadas con los libros.
+ * Incluye consultas, inserciones, actualizaciones y eliminaciones en la tabla `libros`
+ * y su tabla de relación `libros_autores`.
+ */
 public class LibroDAO {
 
     /**
@@ -14,7 +19,6 @@ public class LibroDAO {
      * información de sus autores, categoría y editorial.
      * @return Una lista de objetos Libro.
      */
-
     public List<Libro> obtenerTodosLosLibros() {
         List<Libro> libros = new ArrayList<>();
         Connection con = ConexionBD.getConexion();
@@ -64,7 +68,6 @@ public class LibroDAO {
      * @param isbn El ISBN del libro a buscar.
      * @return Un objeto Libro si se encuentra y hay disponibles, de lo contrario null.
      */
-
     public Libro buscarPorIsbn(String isbn) {
         Libro libro = null;
         // La consulta es similar a la de obtener todos, para traer también el autor.
@@ -103,7 +106,6 @@ public class LibroDAO {
      * @param libroId El ID del libro a buscar.
      * @return Un objeto Libro con todos sus datos, o null si no se encuentra.
      */
-
     public Libro obtenerDetallesLibro(long libroId) {
         Libro libro = null;
         // <-- CAMBIO: Se usa STRING_AGG y se convierte a.id a NVARCHAR para la agregación.
@@ -161,6 +163,13 @@ public class LibroDAO {
         return libro;
     }
 
+    /**
+     * Registra un nuevo libro en la base de datos junto con sus autores.
+     * Utiliza una transacción para asegurar que tanto el libro como sus relaciones con autores se guarden correctamente.
+     * @param libro El objeto Libro con los datos a insertar.
+     * @param autoresIds La lista de IDs de los autores a asociar.
+     * @return `true` si la operación fue exitosa, `false` en caso contrario.
+     */
     public boolean registrarLibro(Libro libro, List<Long> autoresIds) { // <-- CAMBIO 1: de Integer a Long
         Connection con = ConexionBD.getConexion();
         // Se pide que la BD devuelva las llaves generadas (el ID del nuevo libro)
@@ -216,6 +225,13 @@ public class LibroDAO {
         }
     }
 
+    /**
+     * Actualiza la información de un libro existente y sus autores.
+     * Utiliza una transacción: borra las relaciones de autor antiguas y crea las nuevas.
+     * @param libro El objeto Libro con los datos actualizados.
+     * @param autoresIds La nueva lista de IDs de autores para el libro.
+     * @return `true` si la actualización fue exitosa, `false` de lo contrario.
+     */
     public boolean actualizarLibro(Libro libro, List<Long> autoresIds) { // <-- CAMBIO 1: de Integer a Long
         Connection con = ConexionBD.getConexion();
         String sqlUpdateLibro = "UPDATE libros SET isbn = ?, titulo = ?, anio_publicacion = ?, portada_url = ?, cantidad_total = ?, cantidad_disponible = ?, editorial_id = ?, categoria_id = ? WHERE id = ?";
@@ -269,7 +285,12 @@ public class LibroDAO {
         }
     }
 
-
+    /**
+     * Elimina un libro de la base de datos usando su ID.
+     * La eliminación en cascada en la BD se encarga de las relaciones en `libros_autores`.
+     * @param libroId El ID del libro a eliminar.
+     * @return `true` si se eliminó al menos una fila, `false` de lo contrario.
+     */
     public boolean eliminarLibro(long libroId) {
         String sql = "DELETE FROM libros WHERE id = ?";
         Connection con = ConexionBD.getConexion();
@@ -288,7 +309,6 @@ public class LibroDAO {
      * Genera un reporte con los 10 libros más prestados.
      * @return Una lista de arrays de objetos con [Título, Cantidad de Préstamos].
      */
-
     public List<Object[]> getReporteLibrosMasPrestados() {
         List<Object[]> reporte = new ArrayList<>();
         // <-- CAMBIO: Se usa TOP 10 en lugar de LIMIT 10.
